@@ -5,7 +5,6 @@
 <title>Blox Fruits – Robux Gift Tool</title>
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 
-<!-- FONT -->
 <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@400;600;700&display=swap" rel="stylesheet">
 
 <style>
@@ -25,45 +24,43 @@
 body{
   margin:0;
   height:100vh;
-  overflow:hidden;
   font-family:'Poppins',sans-serif;
   background:radial-gradient(circle at top,#1e293b 0%,#020617 65%);
   color:var(--text);
+  overflow:hidden;
 }
 
-/* ===== LAYOUT ===== */
 .container{
   max-width:1600px;
-  margin:auto;
   height:100vh;
-  display:grid;
-  grid-template-columns: 42% 58%;
-  gap:26px;
+  margin:auto;
   padding:26px 32px;
+  display:grid;
+  grid-template-columns: 45% 55%;
+  gap:26px;
 }
 
+/* ===== LEFT / RIGHT ===== */
 .left,.right{
   display:flex;
   flex-direction:column;
-  gap:20px;
+  gap:18px;
+  min-height:0;
 }
 
-/* ===== COMMON ===== */
+/* ===== HEADER ===== */
 h1{
-  text-align:center;
+  margin:0;
   color:var(--accent);
   font-size:34px;
-  letter-spacing:1px;
-  margin:0;
 }
 
 .subtitle{
-  text-align:center;
   color:var(--muted);
   font-size:15px;
-  margin-bottom:6px;
 }
 
+/* ===== CARD ===== */
 .card{
   background:linear-gradient(180deg,#0f172a,#020617);
   border-radius:18px;
@@ -94,25 +91,20 @@ input:focus{outline:2px solid var(--accent)}
 button{
   border:none;
   border-radius:14px;
-  padding:18px;
-  font-size:18px;
+  padding:16px;
+  font-size:17px;
   font-weight:700;
   cursor:pointer;
 }
 
-/* ===== GAMEPASS LIST ===== */
+/* ===== GAMEPASS ===== */
 .gamepass-list{
-  display:flex;
-  flex-direction:column;
-  gap:14px;
   overflow-y:auto;
-  max-height:calc(100vh - 300px);
+  flex:1;
   padding-right:6px;
 }
 
-.gamepass-list::-webkit-scrollbar{
-  width:6px;
-}
+.gamepass-list::-webkit-scrollbar{width:6px}
 .gamepass-list::-webkit-scrollbar-thumb{
   background:#334155;
   border-radius:10px;
@@ -123,30 +115,28 @@ button{
   grid-template-columns:64px 1fr 120px;
   gap:14px;
   align-items:center;
+  margin-bottom:14px;
 }
 
 .gp-icon{
   width:64px;
   height:64px;
   border-radius:16px;
-  object-fit:cover;
   outline:2px solid #334155;
 }
 
-.gp-name{
-  font-size:16px;
-  font-weight:700;
-}
-
-.gp-price{
-  font-size:14px;
-  color:var(--muted);
-}
+.gp-name{font-weight:700}
+.gp-price{font-size:14px;color:var(--muted)}
 
 /* ===== ACTION ===== */
 .run{
   background:linear-gradient(90deg,#22c55e,#4ade80);
   color:#022c22;
+}
+
+.auto{
+  background:linear-gradient(90deg,#38bdf8,#60a5fa);
+  color:#020617;
 }
 
 /* ===== RESULT ===== */
@@ -175,39 +165,43 @@ button{
 <body>
 <div class="container">
 
-  <!-- LEFT -->
-  <div class="left">
-    <div>
-      <h1>🌀 BLOX FRUITS</h1>
-      <div class="subtitle">Robux → Gift Gamepass Tool</div>
-    </div>
-
-    <div class="card">
-      <label>💰 Robux trong acc</label>
-      <input id="total" type="number" value="3250">
-    </div>
-
-    <div class="card">
-      <h3>🎁 Gamepass</h3>
-      <div id="list" class="gamepass-list"></div>
-    </div>
+<!-- LEFT -->
+<div class="left">
+  <div>
+    <h1>🌀 BLOX FRUITS</h1>
+    <div class="subtitle">Robux → Gift Gamepass Tool</div>
   </div>
 
-  <!-- RIGHT -->
-  <div class="right">
-    <div class="card">
-      <button class="run" onclick="calculate()">⚙️ TÍNH TOÁN</button>
-    </div>
-
-    <div class="card">
-      <h3>📊 Kết quả gift</h3>
-      <div id="result" class="result">Chưa có dữ liệu</div>
-    </div>
-
-    <div class="footer">
-      Tool by Khiêm • Gift gamepass Blox Fruits
-    </div>
+  <div class="card">
+    <label>💰 Robux trong acc</label>
+    <input id="total" type="number" value="3250">
   </div>
+
+  <div class="card">
+    <h3>🎁 Gamepass</h3>
+    <div id="list" class="gamepass-list"></div>
+  </div>
+</div>
+
+<!-- RIGHT -->
+<div class="right">
+  <div class="card">
+    <button class="auto" onclick="autoCombo()">🧠 GỢI Ý COMBO TỐI ƯU</button>
+  </div>
+
+  <div class="card">
+    <button class="run" onclick="calculate()">⚙️ TÍNH TOÁN</button>
+  </div>
+
+  <div class="card">
+    <h3>📊 Kết quả gift</h3>
+    <div id="result" class="result">Chưa có dữ liệu</div>
+  </div>
+
+  <div class="footer">
+    Tool by Khiêm • Gift gamepass Blox Fruits
+  </div>
+</div>
 
 </div>
 
@@ -225,47 +219,69 @@ const gamepasses = [
 
 const list = document.getElementById("list");
 
-gamepasses.forEach(gp=>{
-  const row = document.createElement("div");
-  row.className = "gp-row";
-  row.innerHTML = `
+gamepasses.forEach((gp,i)=>{
+  const row=document.createElement("div");
+  row.className="gp-row";
+  row.innerHTML=`
     <img class="gp-icon" src="${gp.img}">
     <div>
       <div class="gp-name">${gp.name}</div>
       <div class="gp-price">${gp.price} Robux</div>
     </div>
-    <input type="number" min="0" value="0"
-      data-price="${gp.price}"
-      data-name="${gp.name}">
+    <input type="number" min="0" value="0" id="gp_${i}">
   `;
   list.appendChild(row);
 });
 
 function calculate(){
-  const total = +document.getElementById("total").value;
-  let sum = 0;
-  let text = "";
-
-  document.querySelectorAll(".gp-row input").forEach(i=>{
-    const qty = +i.value;
-    const price = +i.dataset.price;
-    const name = i.dataset.name;
-    if(qty > 0){
-      sum += qty * price;
-      text += `• ${qty} × ${name} (${price} RBX)\n`;
+  const total=+totalInput.value;
+  let sum=0,text="";
+  gamepasses.forEach((gp,i)=>{
+    const qty=+document.getElementById(`gp_${i}`).value;
+    if(qty>0){
+      sum+=qty*gp.price;
+      text+=`• ${qty} × ${gp.name} (${gp.price} RBX)\n`;
     }
   });
-
-  let diff = sum - total;
-  let status =
-    diff === 0 ? `<span class="ok">✅ DÙNG HẾT ROBUX</span>` :
-    diff < 0 ? `<span class="warn">⚠️ DƯ ${-diff} RBX</span>` :
-               `<span class="bad">❌ THIẾU ${diff} RBX</span>`;
-
-  document.getElementById("result").innerHTML =
-    text + `\nTổng dùng: ${sum} RBX\n${status}`;
+  showResult(sum,text);
 }
-</script>
 
+function autoCombo(){
+  const total=+totalInput.value;
+  gamepasses.forEach((_,i)=>gpQty(i,0));
+  let remain=total;
+
+  gamepasses
+    .sort((a,b)=>b.price-a.price)
+    .forEach(gp=>{
+      const i=gamepasses.indexOf(gp);
+      const qty=Math.floor(remain/gp.price);
+      if(qty>0){
+        gpQty(i,qty);
+        remain-=qty*gp.price;
+      }
+    });
+
+  calculate();
+}
+
+function gpQty(i,v){
+  document.getElementById(`gp_${i}`).value=v;
+}
+
+function showResult(sum,text){
+  const total=+totalInput.value;
+  const diff=sum-total;
+  let status=
+    diff===0?`<span class="ok">✅ DÙNG HẾT ROBUX</span>`:
+    diff<0?`<span class="warn">⚠️ DƯ ${-diff} RBX</span>`:
+    `<span class="bad">❌ THIẾU ${diff} RBX</span>`;
+
+  result.innerHTML=text+`\nTổng dùng: ${sum} RBX\n${status}`;
+}
+
+const totalInput=document.getElementById("total");
+const result=document.getElementById("result");
+</script>
 </body>
 </html>
