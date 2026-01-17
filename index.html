@@ -170,7 +170,7 @@ button{
 <div class="left">
   <div>
     <img src="logo.png" class="logo" alt="Blox Fruits">
-    <div class="subtitle">Robux → Gift Gamepass Tool</div>
+    <div class="subtitle">Gift Gamepass Tool</div>
   </div>
 
   <div class="card">
@@ -195,7 +195,7 @@ button{
   </div>
 
   <div class="card">
-    <h3>📊 Kết quả gift</h3>
+    <h3> Kết quả </h3>
     <div id="result" class="result">Chưa có dữ liệu</div>
   </div>
 
@@ -241,7 +241,7 @@ function calculate(){
     const qty=+document.getElementById(`gp_${i}`).value;
     if(qty>0){
       sum+=qty*gp.price;
-      text+=`• ${qty} × ${gp.name} (${gp.price} RBX)\n`;
+      text+=`• ${qty} × ${gp.name} (${gp.price} ROBUX)\n`;
     }
   });
   showResult(sum,text);
@@ -269,11 +269,12 @@ function showResult(sum,text){
   const diff=sum-(+totalInput.value);
   let status=
     diff===0?`<span class="ok">✅ DÙNG HẾT ROBUX</span>`:
-    diff<0?`<span class="warn">⚠️ DƯ ${-diff} RBX</span>`:
-    `<span class="bad">❌ THIẾU ${diff} RBX</span>`;
+    diff<0?`<span class="warn">⚠️ DƯ ${-diff} ROBUX</span>`:
+    `<span class="bad">❌ THIẾU ${diff} ROBUX</span>`;
 
-  result.innerHTML=text+`\nTổng dùng: ${sum} RBX\n${status}`;
+  result.innerHTML=text+`\nTổng dùng: ${sum} ROBUX\n${status}`;
 }
 </script>
 </body>
 </html>
+
