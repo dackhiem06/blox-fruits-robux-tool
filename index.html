@@ -2,10 +2,9 @@
 <html lang="vi">
 <head>
 <meta charset="UTF-8">
-<title>Blox Fruits – Robux Gift Tool</title>
+<title>Gift Gamepass Tool</title>
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 
-<!-- FONT -->
 <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@400;600;700;800&display=swap" rel="stylesheet">
 
 <style>
@@ -36,20 +35,20 @@ body{
   overflow-y:auto;
 }
 
-/* SCROLL BAR NEON */
+/* NEON SCROLLBAR */
 ::-webkit-scrollbar{width:10px}
 ::-webkit-scrollbar-track{background:#020617}
 ::-webkit-scrollbar-thumb{
   background:linear-gradient(180deg,#4cc9f0,#7c7cff);
   border-radius:20px;
-  box-shadow:0 0 12px rgba(124,124,255,.8);
+  box-shadow:0 0 12px rgba(124,124,255,.9);
 }
 
 /* LAYOUT */
 .container{
   max-width:1600px;
   margin:auto;
-  padding:24px 36px;
+  padding:28px 36px;
   display:grid;
   grid-template-columns:48% 52%;
   gap:28px;
@@ -58,36 +57,26 @@ body{
 .left,.right{
   display:flex;
   flex-direction:column;
-  gap:20px;
+  gap:22px;
 }
 
 /* CARD */
 .card{
   background:var(--card);
   border-radius:22px;
-  padding:22px;
+  padding:24px;
   backdrop-filter:blur(14px);
   box-shadow:
     inset 0 0 0 1px rgba(255,255,255,.05),
     0 20px 50px rgba(0,0,0,.55);
 }
 
-/* HEADER */
-.header{
-  display:flex;
-  align-items:center;
-  gap:16px;
-}
-.logo{
-  width:64px;
-}
-.title{
-  font-size:26px;
+/* TITLE */
+.main-title{
+  font-size:32px;
   font-weight:800;
-}
-.subtitle{
-  color:var(--muted);
-  font-size:15px;
+  text-align:center;
+  letter-spacing:1px;
 }
 
 /* INPUT */
@@ -125,15 +114,15 @@ input:focus{
   gap:14px;
   align-items:center;
   margin-bottom:14px;
-  padding:10px;
+  padding:12px;
   border-radius:18px;
   transition:.25s;
 }
 .gp-row:hover{
-  transform:scale(1.04);
+  transform:scale(1.05);
   box-shadow:
-    0 0 0 2px rgba(124,124,255,.8),
-    0 0 24px rgba(76,201,240,.6);
+    0 0 0 2px rgba(124,124,255,.9),
+    0 0 28px rgba(76,201,240,.7);
 }
 
 .gp-icon{
@@ -145,7 +134,7 @@ input:focus{
 .gp-name{font-weight:700}
 .gp-price{font-size:14px;color:var(--muted)}
 
-/* HIGHLIGHT COMBO */
+/* OPTIMAL COMBO */
 .optimal{
   outline:2px solid var(--accent);
   animation:pulse 1.6s infinite;
@@ -200,13 +189,7 @@ button:hover{
 <div class="container">
 
   <div class="card" style="grid-column:1/-1">
-    <div class="header">
-      <img src="https://static.wikia.nocookie.net/roblox-blox-piece/images/e/e6/Site-logo.png/revision/latest?cb=20250404120109" class="logo">
-      <div>
-        <div class="title">BLOX FRUITS</div>
-        <div class="subtitle">Robux → Gift Gamepass Tool</div>
-      </div>
-    </div>
+    <div class="main-title">🎁 Gift Gamepass Tool</div>
   </div>
 
   <div class="left">
@@ -216,14 +199,14 @@ button:hover{
     </div>
 
     <div class="card">
-      <h3>🎁 Gamepass</h3>
+      <h3>🎮 Gamepass</h3>
       <div id="list" class="gamepass-list"></div>
     </div>
   </div>
 
   <div class="right">
     <div class="card">
-      <button class="auto" onclick="autoCombo()">🧠 GỢI Ý COMBO TỐI ƯU</button>
+      <button class="auto" onclick="autoCombo()">🧠 AUTO GỢI Ý COMBO TỐI ƯU</button>
     </div>
 
     <div class="card">
@@ -231,14 +214,15 @@ button:hover{
     </div>
 
     <div class="card">
-      <h3>📊 Kết quả gift</h3>
+      <h3>📊 Kết quả</h3>
       <div id="result" class="result">Chưa có dữ liệu</div>
     </div>
 
     <div class="footer">
-      Tool by Khiêm • Gift Gamepass Blox Fruits
+      Tool by Khiêm • Gift Gamepass
     </div>
   </div>
+
 </div>
 
 <script>
