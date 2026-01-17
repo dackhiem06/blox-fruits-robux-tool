@@ -5,6 +5,7 @@
 <title>Blox Fruits – Robux Gift Tool</title>
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 
+<!-- Font -->
 <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@400;600;700;800&display=swap" rel="stylesheet">
 
 <style>
@@ -15,16 +16,18 @@
   --ok:#22c55e;
   --warn:#facc15;
   --bad:#ef4444;
-  --text:#f9fafb;
+  --text:#eaf2ff;
   --muted:#cbd5f5;
 }
 
-*{box-sizing:border-box}
+* {
+  box-sizing:border-box;
+  font-family:'Poppins',sans-serif;
+}
 
-body{
+body {
   margin:0;
   height:100vh;
-  font-family:'Poppins',sans-serif;
   color:var(--text);
   background:
     linear-gradient(180deg,rgba(5,10,30,.88),rgba(2,6,23,.96)),
@@ -33,12 +36,12 @@ body{
   overflow:hidden;
 }
 
-/* ===== LAYOUT ===== */
+/* Layout */
 .container{
-  max-width:1700px;
-  height:100vh;
+  max-width:1600px;
+  height:100%;
   margin:auto;
-  padding:26px 40px;
+  padding:24px 36px;
   display:grid;
   grid-template-columns: 48% 52%;
   gap:28px;
@@ -51,23 +54,21 @@ body{
   min-height:0;
 }
 
-/* ===== HEADER ===== */
+/* Header */
 .header{
   display:flex;
   align-items:center;
-  gap:16px;
+  gap:14px;
 }
-
 .logo{
-  height:56px;
+  width:62px;
 }
-
 .subtitle{
   font-size:15px;
   color:var(--muted);
 }
 
-/* ===== CARD ===== */
+/* Card */
 .card{
   background:var(--card);
   border-radius:20px;
@@ -75,38 +76,43 @@ body{
   backdrop-filter:blur(14px);
   box-shadow:
     inset 0 0 0 1px rgba(255,255,255,.05),
-    0 20px 50px rgba(0,0,0,.6);
+    0 20px 50px rgba(0,0,0,.55);
 }
 
-/* ===== INPUT ===== */
+/* Inputs */
 label{
   font-weight:600;
   color:var(--muted);
 }
-
 input{
   width:100%;
-  padding:14px 16px;
+  padding:14px;
   margin-top:8px;
-  border-radius:16px;
+  border-radius:14px;
   border:none;
   background:#050b1e;
   color:white;
+  font-size:16px;
+  font-weight:600;
   outline:1px solid #334155;
-  font-size:17px;
-  font-weight:700;
   transition:.25s;
 }
-
 input:focus{
   outline:2px solid var(--accent);
-  box-shadow:0 0 18px rgba(76,201,240,.5);
+  box-shadow:0 0 18px rgba(76,201,240,.4);
 }
 
-/* ===== GAMEPASS ===== */
+/* Gamepass List */
 .gamepass-list{
   overflow:auto;
-  padding-right:6px;
+  padding-right:8px;
+}
+.gamepass-list::-webkit-scrollbar{
+  width:6px;
+}
+.gamepass-list::-webkit-scrollbar-thumb{
+  background:#3b4a7a;
+  border-radius:10px;
 }
 
 .gp-row{
@@ -116,30 +122,27 @@ input:focus{
   align-items:center;
   margin-bottom:16px;
 }
-
 .gp-icon{
   width:64px;
   height:64px;
   border-radius:18px;
   box-shadow:0 0 18px rgba(76,201,240,.25);
 }
-
 .gp-name{font-weight:700;font-size:16px}
 .gp-price{font-size:14px;color:var(--muted)}
 
-/* ===== BUTTON ===== */
+/* Buttons */
 button{
   border:none;
   border-radius:18px;
   padding:18px;
   font-size:18px;
-  font-weight:800;
+  font-weight:700;
   cursor:pointer;
   transition:.25s;
   position:relative;
   overflow:hidden;
 }
-
 button::after{
   content:"";
   position:absolute;
@@ -147,40 +150,35 @@ button::after{
   background:linear-gradient(120deg,transparent,rgba(255,255,255,.25),transparent);
   transform:translateX(-120%);
 }
-
 button:hover::after{
   transform:translateX(120%);
   transition:.6s;
 }
-
 button:hover{
   transform:translateY(-3px);
   box-shadow:0 12px 30px rgba(0,0,0,.6);
 }
 
-/* ===== BUTTON COLOR ===== */
+/* Button Colors */
 .auto{
   background:linear-gradient(90deg,var(--accent),var(--accent2));
   color:#020617;
-  box-shadow:0 0 25px rgba(76,201,240,.5);
+  margin-bottom:14px;
 }
-
 .run{
   background:linear-gradient(90deg,#22c55e,#4ade80);
   color:#022c22;
-  box-shadow:0 0 25px rgba(34,197,94,.5);
 }
 
-/* ===== RESULT ===== */
+/* Result */
 .result{
   background:#050b1e;
   border-radius:18px;
   padding:20px;
   white-space:pre-line;
-  line-height:1.7;
   font-size:15px;
+  line-height:1.6;
 }
-
 .ok{color:var(--ok)}
 .warn{color:var(--warn)}
 .bad{color:var(--bad)}
@@ -195,48 +193,51 @@ button:hover{
 </head>
 
 <body>
+
 <div class="container">
 
-<!-- LEFT -->
-<div class="left">
-  <div class="header">
-    <img src="Site-logo.webp" class="logo">
-    <div>
-      <div style="font-size:22px;font-weight:800">BLOX FRUITS</div>
-      <div class="subtitle">Robux → Gift Gamepass Tool</div>
+  <!-- LEFT -->
+  <div class="card" style="grid-column:1/-1;padding-top:12px">
+    <div class="header">
+      <img src="https://static.wikia.nocookie.net/roblox-blox-piece/images/e/e6/Site-logo.png/revision/latest?cb=20250404120109" class="logo" alt="Logo">
+      <div>
+        <div style="font-size:24px;font-weight:800">BLOX FRUITS</div>
+        <div class="subtitle">Robux → Gift Gamepass Tool</div>
+      </div>
     </div>
   </div>
 
-  <div class="card">
-    <label>💰 Robux trong acc</label>
-    <input id="total" type="number" value="3250">
+  <div class="left">
+    <div class="card">
+      <label>💰 Robux trong acc</label>
+      <input id="total" type="number" value="3250">
+    </div>
+
+    <div class="card">
+      <h3>🎁 Gamepass</h3>
+      <div id="list" class="gamepass-list"></div>
+    </div>
   </div>
 
-  <div class="card">
-    <h3>🎁 Gamepass</h3>
-    <div id="list" class="gamepass-list"></div>
-  </div>
-</div>
+  <!-- RIGHT -->
+  <div class="right">
+    <div class="card">
+      <button class="auto" onclick="autoCombo()">🧠 GỢI Ý COMBO TỐI ƯU</button>
+    </div>
 
-<!-- RIGHT -->
-<div class="right">
-  <div class="card">
-    <button class="auto" onclick="autoCombo()">🧠 GỢI Ý COMBO TỐI ƯU</button>
-  </div>
+    <div class="card">
+      <button class="run" onclick="calculate()">⚙️ TÍNH TOÁN</button>
+    </div>
 
-  <div class="card">
-    <button class="run" onclick="calculate()">⚙️ TÍNH TOÁN</button>
-  </div>
+    <div class="card">
+      <h3>📊 Kết quả gift</h3>
+      <div id="result" class="result">Chưa có dữ liệu</div>
+    </div>
 
-  <div class="card">
-    <h3>📊 Kết quả</h3>
-    <div id="result" class="result">Chưa có dữ liệu</div>
+    <div class="footer">
+      Tool by Khiêm • Gift Gamepass Blox Fruits
+    </div>
   </div>
-
-  <div class="footer">
-    Tool by Khiêm • Gift Gamepass Blox Fruits
-  </div>
-</div>
 
 </div>
 
@@ -244,7 +245,7 @@ button:hover{
 const gamepasses = [
   {name:"2x Boss Drop Chance", price:350, img:"https://static.wikia.nocookie.net/roblox-blox-piece/images/3/3a/BadgeBossDrops.png"},
   {name:"Fast Boat", price:350, img:"https://static.wikia.nocookie.net/roblox-blox-piece/images/f/fa/BadgeBoats.png"},
-  {name:"2x Money", price:450, img:"https://static.wikia.nocookie.net/roblox-blox-piece/images/c/cf/BadgeMoneyx2.png"},
+  {name:"2x Money", price:450, img:"http://static.wikia.nocookie.net/roblox-blox-piece/images/c/cf/BadgeMoneyx2.png"},
   {name:"2x Mastery", price:450, img:"https://static.wikia.nocookie.net/roblox-blox-piece/images/1/16/BadgeMasteryx2.png"},
   {name:"Dark Blade", price:1200, img:"https://static.wikia.nocookie.net/roblox-blox-piece/images/7/7f/BadgeDarkBlade.png"},
   {name:"Stat Reset", price:75, img:"https://static.wikia.nocookie.net/roblox-blox-piece/images/3/35/StatReset.png"},
@@ -306,5 +307,6 @@ function showResult(sum,text){
   result.innerHTML=text+`\nTổng dùng: ${sum} RBX\n${status}`;
 }
 </script>
+
 </body>
 </html>
