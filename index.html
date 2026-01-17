@@ -111,6 +111,15 @@ button{
   color:var(--muted);
   margin-top:20px;
 }
+  .gp-icon{
+  width:42px;
+  height:42px;
+  border-radius:10px;
+  object-fit:cover;
+  background:#020617;
+  outline:1px solid #334155;
+}
+
 </style>
 </head>
 
@@ -152,10 +161,11 @@ button{
 <script>
 const list=document.getElementById("list");
 
-function addRow(name="",price="",limit=""){
+function addRow(name="",price="",limit="",img=""){
   const d=document.createElement("div");
   d.className="row";
   d.innerHTML=`
+    <img class="gp-icon" src="${img || 'https://via.placeholder.com/42'}">
     <input placeholder="Tên gói" value="${name}">
     <input type="number" placeholder="Giá Robux" value="${price}">
     <input type="number" placeholder="Giới hạn" value="${limit}">
@@ -164,9 +174,28 @@ function addRow(name="",price="",limit=""){
   list.appendChild(d);
 }
 
-addRow("x2 EXP",450,3);
-addRow("Fast Boat",350,2);
-addRow("Fruit Notifier",75,5);
+
+addRow(
+  "x2 MAS",
+  450,
+  3,
+  "https://static.wikia.nocookie.net/roblox-blox-piece/images/1/16/BadgeMasteryx2.png/revision/latest?cb=20241223150402"
+);
+
+addRow(
+  "Fast Boat",
+  350,
+  2,
+  "https://static.wikia.nocookie.net/roblox-blox-piece/images/f/fa/BadgeBoats.png/revision/latest?cb=20241223150315"
+);
+
+addRow(
+  "Fruit Notifier",
+  75,
+  5,
+  "https://static.wikia.nocookie.net/roblox-blox-piece/images/9/98/BadgeFruitNotifier.png/revision/latest?cb=20241223150335"
+);
+
 
 function calculate(){
   const total=+document.getElementById("total").value;
@@ -223,3 +252,4 @@ function calculate(){
 
 </body>
 </html>
+
