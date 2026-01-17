@@ -19,17 +19,15 @@
 
 *{box-sizing:border-box}
 
-/* ===== SỐ 2: NỀN SÁNG HƠN ===== */
 body{
   margin:0;
   font-family:Inter,Arial,sans-serif;
-  background:
-    radial-gradient(circle at top, #1e293b 0%, #020617 65%);
+  background:radial-gradient(circle at top,#1e293b 0%,#020617 65%);
   color:var(--text);
 }
 
 .container{
-  max-width:1000px;
+  max-width:1050px;
   margin:auto;
   padding:20px;
 }
@@ -45,12 +43,8 @@ h1{text-align:center;color:var(--accent)}
   box-shadow:0 10px 30px rgba(0,0,0,.45);
 }
 
-label{
-  font-size:14px;
-  color:var(--muted);
-}
+label{font-size:14px;color:var(--muted)}
 
-/* ===== SỐ 4: INPUT SÁNG & RÕ ===== */
 input{
   width:100%;
   padding:11px;
@@ -59,25 +53,28 @@ input{
   border-radius:10px;
   border:none;
   background:#020617;
-  color:#f9fafb;
-  font-size:15px;
+  color:white;
   outline:1px solid #334155;
+  font-size:14px;
 }
 
-input::placeholder{
-  color:#94a3b8;
-}
-
-input:focus{
-  outline:2px solid var(--accent);
-  background:#020617;
-}
+input:focus{outline:2px solid var(--accent)}
 
 .row{
   display:grid;
-  grid-template-columns:2fr 1fr 1fr auto;
+  grid-template-columns:50px 2fr 1fr 1fr auto;
   gap:10px;
+  align-items:center;
   margin-bottom:10px;
+}
+
+.gp-icon{
+  width:46px;
+  height:46px;
+  border-radius:10px;
+  object-fit:cover;
+  background:#020617;
+  outline:1px solid #334155;
 }
 
 button{
@@ -97,7 +94,6 @@ button{
   border-radius:12px;
   padding:16px;
   white-space:pre-line;
-  font-size:15px;
   line-height:1.6;
 }
 
@@ -111,15 +107,6 @@ button{
   color:var(--muted);
   margin-top:20px;
 }
-  .gp-icon{
-  width:42px;
-  height:42px;
-  border-radius:10px;
-  object-fit:cover;
-  background:#020617;
-  outline:1px solid #334155;
-}
-
 </style>
 </head>
 
@@ -148,12 +135,12 @@ button{
 </div>
 
 <div class="card">
-  <h3>📊 Kết quả gift</h3>
+  <h3>📊 Kết quả</h3>
   <div class="result" id="result">Chưa có dữ liệu</div>
 </div>
 
 <div class="footer">
-  Tool by Khiêm • Dùng cho gift Gamepass Blox Fruits
+  Tool by Khiêm • Dùng để gift gamepass Blox Fruits
 </div>
 
 </div>
@@ -161,41 +148,22 @@ button{
 <script>
 const list=document.getElementById("list");
 
-function addRow(name="",price="",limit="",img=""){
+function addRow(icon="",name="",price="",limit=""){
   const d=document.createElement("div");
   d.className="row";
   d.innerHTML=`
-    <img class="gp-icon" src="${img || 'https://via.placeholder.com/42'}">
+    <img class="gp-icon" src="${icon||'https://via.placeholder.com/46'}">
     <input placeholder="Tên gói" value="${name}">
-    <input type="number" placeholder="Giá Robux" value="${price}">
+    <input type="number" placeholder="Giá" value="${price}">
     <input type="number" placeholder="Giới hạn" value="${limit}">
     <button class="del" onclick="this.parentNode.remove()">✖</button>
   `;
   list.appendChild(d);
 }
 
-
-addRow(
-  "x2 MAS",
-  450,
-  3,
-  "https://static.wikia.nocookie.net/roblox-blox-piece/images/1/16/BadgeMasteryx2.png/revision/latest?cb=20241223150402"
-);
-
-addRow(
-  "Fast Boat",
-  350,
-  2,
-  "https://static.wikia.nocookie.net/roblox-blox-piece/images/f/fa/BadgeBoats.png/revision/latest?cb=20241223150315"
-);
-
-addRow(
-  "Fruit Notifier",
-  75,
-  5,
-  "https://static.wikia.nocookie.net/roblox-blox-piece/images/9/98/BadgeFruitNotifier.png/revision/latest?cb=20241223150335"
-);
-
+addRow("https://i.imgur.com/Vc6Z6yB.png","x2 EXP",450,3);
+addRow("https://i.imgur.com/X0XnM0y.png","Fast Boat",350,2);
+addRow("https://i.imgur.com/D6ZQJvJ.png","Fruit Notifier",75,5);
 
 function calculate(){
   const total=+document.getElementById("total").value;
@@ -203,20 +171,19 @@ function calculate(){
 
   let items=[];
   document.querySelectorAll(".row").forEach(r=>{
-    const name=r.children[0].value;
-    const price=+r.children[1].value;
-    const limit=+r.children[2].value||99;
+    const name=r.children[1].value;
+    const price=+r.children[2].value;
+    const limit=+r.children[3].value||99;
     if(name && price>0) items.push({name,price,limit});
   });
 
   items.sort((a,b)=>b.price-a.price);
-
   let best=null;
 
   function dfs(sum,count,used){
     if(count>maxOrders) return;
     if(!best || Math.abs(total-sum)<Math.abs(total-best.sum)){
-      best={sum,used:JSON.parse(JSON.stringify(used))};
+      best={sum,used:{...used}};
     }
     items.forEach(it=>{
       if((used[it.name]||0)<it.limit){
@@ -244,12 +211,9 @@ function calculate(){
       ? `<span class="warn">⚠️ DƯ ${-diff} RBX</span>`
       : `<span class="bad">❌ THIẾU ${diff} RBX</span>`;
 
-  result.innerHTML=
-    out+
-    `\nTổng dùng: ${best.sum} RBX\n${status}`;
+  result.innerHTML=out+`\nTổng dùng: ${best.sum} RBX\n${status}`;
 }
 </script>
 
 </body>
 </html>
-
