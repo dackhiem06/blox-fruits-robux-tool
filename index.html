@@ -5,12 +5,12 @@
 <title>Blox Fruits – Robux Gift Tool</title>
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 
-<!-- Font -->
+<!-- FONT -->
 <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@400;600;700;800&display=swap" rel="stylesheet">
 
 <style>
 :root{
-  --card: rgba(10,16,40,0.82);
+  --card:rgba(10,16,40,.82);
   --accent:#4cc9f0;
   --accent2:#7c7cff;
   --ok:#22c55e;
@@ -20,30 +20,38 @@
   --muted:#cbd5f5;
 }
 
-* {
+*{
   box-sizing:border-box;
   font-family:'Poppins',sans-serif;
 }
 
-body {
+body{
   margin:0;
-  height:100vh;
+  min-height:100vh;
   color:var(--text);
   background:
-    linear-gradient(180deg,rgba(5,10,30,.88),rgba(2,6,23,.96)),
+    linear-gradient(180deg,rgba(5,10,30,.9),rgba(2,6,23,.96)),
     url("https://upload.wikimedia.org/wikipedia/commons/0/00/Center_of_the_Milky_Way_Galaxy_IV_%E2%80%93_Composite.jpg")
     center/cover no-repeat;
-  overflow:hidden;
+  overflow-y:auto;
 }
 
-/* Layout */
+/* SCROLL BAR NEON */
+::-webkit-scrollbar{width:10px}
+::-webkit-scrollbar-track{background:#020617}
+::-webkit-scrollbar-thumb{
+  background:linear-gradient(180deg,#4cc9f0,#7c7cff);
+  border-radius:20px;
+  box-shadow:0 0 12px rgba(124,124,255,.8);
+}
+
+/* LAYOUT */
 .container{
   max-width:1600px;
-  height:100%;
   margin:auto;
   padding:24px 36px;
   display:grid;
-  grid-template-columns: 48% 52%;
+  grid-template-columns:48% 52%;
   gap:28px;
 }
 
@@ -51,27 +59,12 @@ body {
   display:flex;
   flex-direction:column;
   gap:20px;
-  min-height:0;
 }
 
-/* Header */
-.header{
-  display:flex;
-  align-items:center;
-  gap:14px;
-}
-.logo{
-  width:62px;
-}
-.subtitle{
-  font-size:15px;
-  color:var(--muted);
-}
-
-/* Card */
+/* CARD */
 .card{
   background:var(--card);
-  border-radius:20px;
+  border-radius:22px;
   padding:22px;
   backdrop-filter:blur(14px);
   box-shadow:
@@ -79,7 +72,25 @@ body {
     0 20px 50px rgba(0,0,0,.55);
 }
 
-/* Inputs */
+/* HEADER */
+.header{
+  display:flex;
+  align-items:center;
+  gap:16px;
+}
+.logo{
+  width:64px;
+}
+.title{
+  font-size:26px;
+  font-weight:800;
+}
+.subtitle{
+  color:var(--muted);
+  font-size:15px;
+}
+
+/* INPUT */
 label{
   font-weight:600;
   color:var(--muted);
@@ -95,24 +106,17 @@ input{
   font-size:16px;
   font-weight:600;
   outline:1px solid #334155;
-  transition:.25s;
 }
 input:focus{
   outline:2px solid var(--accent);
   box-shadow:0 0 18px rgba(76,201,240,.4);
 }
 
-/* Gamepass List */
+/* GAMEPASS LIST */
 .gamepass-list{
+  max-height:520px;
   overflow:auto;
-  padding-right:8px;
-}
-.gamepass-list::-webkit-scrollbar{
-  width:6px;
-}
-.gamepass-list::-webkit-scrollbar-thumb{
-  background:#3b4a7a;
-  border-radius:10px;
+  padding-right:6px;
 }
 
 .gp-row{
@@ -120,18 +124,39 @@ input:focus{
   grid-template-columns:64px 1fr 120px;
   gap:14px;
   align-items:center;
-  margin-bottom:16px;
+  margin-bottom:14px;
+  padding:10px;
+  border-radius:18px;
+  transition:.25s;
 }
+.gp-row:hover{
+  transform:scale(1.04);
+  box-shadow:
+    0 0 0 2px rgba(124,124,255,.8),
+    0 0 24px rgba(76,201,240,.6);
+}
+
 .gp-icon{
   width:64px;
   height:64px;
   border-radius:18px;
-  box-shadow:0 0 18px rgba(76,201,240,.25);
+  box-shadow:0 0 16px rgba(76,201,240,.3);
 }
-.gp-name{font-weight:700;font-size:16px}
+.gp-name{font-weight:700}
 .gp-price{font-size:14px;color:var(--muted)}
 
-/* Buttons */
+/* HIGHLIGHT COMBO */
+.optimal{
+  outline:2px solid var(--accent);
+  animation:pulse 1.6s infinite;
+}
+@keyframes pulse{
+  0%{box-shadow:0 0 12px rgba(76,201,240,.4)}
+  50%{box-shadow:0 0 28px rgba(124,124,255,.9)}
+  100%{box-shadow:0 0 12px rgba(76,201,240,.4)}
+}
+
+/* BUTTON */
 button{
   border:none;
   border-radius:18px;
@@ -140,44 +165,24 @@ button{
   font-weight:700;
   cursor:pointer;
   transition:.25s;
-  position:relative;
-  overflow:hidden;
-}
-button::after{
-  content:"";
-  position:absolute;
-  inset:0;
-  background:linear-gradient(120deg,transparent,rgba(255,255,255,.25),transparent);
-  transform:translateX(-120%);
-}
-button:hover::after{
-  transform:translateX(120%);
-  transition:.6s;
 }
 button:hover{
   transform:translateY(-3px);
   box-shadow:0 12px 30px rgba(0,0,0,.6);
 }
-
-/* Button Colors */
 .auto{
   background:linear-gradient(90deg,var(--accent),var(--accent2));
-  color:#020617;
-  margin-bottom:14px;
 }
 .run{
   background:linear-gradient(90deg,#22c55e,#4ade80);
-  color:#022c22;
 }
 
-/* Result */
+/* RESULT */
 .result{
   background:#050b1e;
   border-radius:18px;
   padding:20px;
   white-space:pre-line;
-  font-size:15px;
-  line-height:1.6;
 }
 .ok{color:var(--ok)}
 .warn{color:var(--warn)}
@@ -187,21 +192,18 @@ button:hover{
   text-align:center;
   font-size:13px;
   color:var(--muted);
-  margin-top:auto;
 }
 </style>
 </head>
 
 <body>
-
 <div class="container">
 
-  <!-- LEFT -->
-  <div class="card" style="grid-column:1/-1;padding-top:12px">
+  <div class="card" style="grid-column:1/-1">
     <div class="header">
-      <img src="https://static.wikia.nocookie.net/roblox-blox-piece/images/e/e6/Site-logo.png/revision/latest?cb=20250404120109" class="logo" alt="Logo">
+      <img src="https://static.wikia.nocookie.net/roblox-blox-piece/images/e/e6/Site-logo.png/revision/latest?cb=20250404120109" class="logo">
       <div>
-        <div style="font-size:24px;font-weight:800">BLOX FRUITS</div>
+        <div class="title">BLOX FRUITS</div>
         <div class="subtitle">Robux → Gift Gamepass Tool</div>
       </div>
     </div>
@@ -219,7 +221,6 @@ button:hover{
     </div>
   </div>
 
-  <!-- RIGHT -->
   <div class="right">
     <div class="card">
       <button class="auto" onclick="autoCombo()">🧠 GỢI Ý COMBO TỐI ƯU</button>
@@ -238,23 +239,22 @@ button:hover{
       Tool by Khiêm • Gift Gamepass Blox Fruits
     </div>
   </div>
-
 </div>
 
 <script>
-const gamepasses = [
-  {name:"2x Boss Drop Chance", price:350, img:"https://static.wikia.nocookie.net/roblox-blox-piece/images/3/3a/BadgeBossDrops.png"},
-  {name:"Fast Boat", price:350, img:"https://static.wikia.nocookie.net/roblox-blox-piece/images/f/fa/BadgeBoats.png"},
-  {name:"2x Money", price:450, img:"http://static.wikia.nocookie.net/roblox-blox-piece/images/c/cf/BadgeMoneyx2.png"},
-  {name:"2x Mastery", price:450, img:"https://static.wikia.nocookie.net/roblox-blox-piece/images/1/16/BadgeMasteryx2.png"},
-  {name:"Dark Blade", price:1200, img:"https://static.wikia.nocookie.net/roblox-blox-piece/images/7/7f/BadgeDarkBlade.png"},
-  {name:"Stat Reset", price:75, img:"https://static.wikia.nocookie.net/roblox-blox-piece/images/3/35/StatReset.png"},
-  {name:"+1 Fruit Storage", price:400, img:"https://static.wikia.nocookie.net/roblox-blox-piece/images/6/6a/BadgeFruitStorage.png"}
+const gamepasses=[
+{name:"2x Boss Drop Chance",price:350,img:"https://static.wikia.nocookie.net/roblox-blox-piece/images/3/3a/BadgeBossDrops.png"},
+{name:"Fast Boat",price:350,img:"https://static.wikia.nocookie.net/roblox-blox-piece/images/f/fa/BadgeBoats.png"},
+{name:"2x Money",price:450,img:"https://static.wikia.nocookie.net/roblox-blox-piece/images/c/cf/BadgeMoneyx2.png"},
+{name:"2x Mastery",price:450,img:"https://static.wikia.nocookie.net/roblox-blox-piece/images/1/16/BadgeMasteryx2.png"},
+{name:"Dark Blade",price:1200,img:"https://static.wikia.nocookie.net/roblox-blox-piece/images/7/7f/BadgeDarkBlade.png"},
+{name:"Stat Reset",price:75,img:"https://static.wikia.nocookie.net/roblox-blox-piece/images/3/35/StatReset.png"},
+{name:"+1 Fruit Storage",price:400,img:"https://static.wikia.nocookie.net/roblox-blox-piece/images/6/6a/BadgeFruitStorage.png"}
 ];
 
 const list=document.getElementById("list");
-const totalInput=document.getElementById("total");
 const result=document.getElementById("result");
+const totalInput=document.getElementById("total");
 
 gamepasses.forEach((gp,i)=>{
   const row=document.createElement("div");
@@ -271,42 +271,39 @@ gamepasses.forEach((gp,i)=>{
 });
 
 function calculate(){
-  let sum=0,text="";
+  let sum=0,txt="";
   gamepasses.forEach((gp,i)=>{
-    const qty=+document.getElementById(`gp_${i}`).value;
+    const qty=+document.getElementById("gp_"+i).value;
     if(qty>0){
       sum+=qty*gp.price;
-      text+=`• ${qty} × ${gp.name} (${gp.price} RBX)\n`;
+      txt+=`• ${qty} × ${gp.name}\n`;
     }
   });
-  showResult(sum,text);
-}
-
-function autoCombo(){
-  let remain=+totalInput.value;
-  gamepasses.forEach((_,i)=>document.getElementById(`gp_${i}`).value=0);
-
-  [...gamepasses].sort((a,b)=>b.price-a.price).forEach(gp=>{
-    const i=gamepasses.indexOf(gp);
-    const qty=Math.floor(remain/gp.price);
-    if(qty>0){
-      document.getElementById(`gp_${i}`).value=qty;
-      remain-=qty*gp.price;
-    }
-  });
-  calculate();
-}
-
-function showResult(sum,text){
   const diff=sum-(+totalInput.value);
   let status=
     diff===0?`<span class="ok">✅ DÙNG HẾT ROBUX</span>`:
     diff<0?`<span class="warn">⚠️ DƯ ${-diff} ROBUX</span>`:
     `<span class="bad">❌ THIẾU ${diff} ROBUX</span>`;
+  result.innerHTML=txt+`\nTổng dùng: ${sum} RBX\n`+status;
+}
 
-  result.innerHTML=text+`\nTổng dùng: ${sum} RBX\n${status}`;
+function autoCombo(){
+  let remain=+totalInput.value;
+  document.querySelectorAll(".gp-row").forEach(r=>r.classList.remove("optimal"));
+  gamepasses.forEach((_,i)=>document.getElementById("gp_"+i).value=0);
+
+  [...gamepasses].map((g,i)=>({...g,i}))
+    .sort((a,b)=>b.price-a.price)
+    .forEach(g=>{
+      const q=Math.floor(remain/g.price);
+      if(q>0){
+        document.getElementById("gp_"+g.i).value=q;
+        document.querySelectorAll(".gp-row")[g.i].classList.add("optimal");
+        remain-=q*g.price;
+      }
+    });
+  calculate();
 }
 </script>
-
 </body>
 </html>
