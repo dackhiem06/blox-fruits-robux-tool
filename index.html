@@ -5,11 +5,11 @@
 <title>Blox Fruits – Robux Gift Tool</title>
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 
-<link href="https://fonts.googleapis.com/css2?family=Poppins:wght@400;600;700&display=swap" rel="stylesheet">
+<link href="https://fonts.googleapis.com/css2?family=Poppins:wght@400;600;700;800&display=swap" rel="stylesheet">
 
 <style>
 :root{
-  --card:#0b1224ee;
+  --card: rgba(10,16,40,0.82);
   --accent:#4cc9f0;
   --accent2:#7c7cff;
   --ok:#22c55e;
@@ -27,32 +27,39 @@ body{
   font-family:'Poppins',sans-serif;
   color:var(--text);
   background:
-    linear-gradient(180deg,rgba(5,10,30,.88),rgba(2,6,23,.95)),
-    url("bg.jpg") center/cover no-repeat;
+    linear-gradient(180deg,rgba(5,10,30,.88),rgba(2,6,23,.96)),
+    url("https://upload.wikimedia.org/wikipedia/commons/0/00/Center_of_the_Milky_Way_Galaxy_IV_%E2%80%93_Composite.jpg")
+    center/cover no-repeat;
   overflow:hidden;
 }
 
+/* ===== LAYOUT ===== */
 .container{
-  max-width:1600px;
+  max-width:1700px;
   height:100vh;
   margin:auto;
-  padding:26px 36px;
+  padding:26px 40px;
   display:grid;
-  grid-template-columns: 46% 54%;
+  grid-template-columns: 48% 52%;
   gap:28px;
 }
 
 .left,.right{
   display:flex;
   flex-direction:column;
-  gap:18px;
+  gap:20px;
   min-height:0;
 }
 
 /* ===== HEADER ===== */
+.header{
+  display:flex;
+  align-items:center;
+  gap:16px;
+}
+
 .logo{
-  height:58px;
-  margin-bottom:4px;
+  height:56px;
 }
 
 .subtitle{
@@ -63,12 +70,15 @@ body{
 /* ===== CARD ===== */
 .card{
   background:var(--card);
-  border-radius:18px;
+  border-radius:20px;
   padding:22px;
-  box-shadow:0 12px 40px rgba(0,0,0,.55);
-  backdrop-filter:blur(10px);
+  backdrop-filter:blur(14px);
+  box-shadow:
+    inset 0 0 0 1px rgba(255,255,255,.05),
+    0 20px 50px rgba(0,0,0,.6);
 }
 
+/* ===== INPUT ===== */
 label{
   font-weight:600;
   color:var(--muted);
@@ -76,39 +86,27 @@ label{
 
 input{
   width:100%;
-  padding:14px;
+  padding:14px 16px;
   margin-top:8px;
-  border-radius:14px;
+  border-radius:16px;
   border:none;
-  background:#020617;
+  background:#050b1e;
   color:white;
   outline:1px solid #334155;
-  font-size:16px;
-  font-weight:600;
-}
-
-input:focus{outline:2px solid var(--accent)}
-
-button{
-  border:none;
-  border-radius:14px;
-  padding:16px;
   font-size:17px;
   font-weight:700;
-  cursor:pointer;
+  transition:.25s;
+}
+
+input:focus{
+  outline:2px solid var(--accent);
+  box-shadow:0 0 18px rgba(76,201,240,.5);
 }
 
 /* ===== GAMEPASS ===== */
 .gamepass-list{
-  overflow-y:auto;
-  flex:1;
+  overflow:auto;
   padding-right:6px;
-}
-
-.gamepass-list::-webkit-scrollbar{width:6px}
-.gamepass-list::-webkit-scrollbar-thumb{
-  background:#3b4a7a;
-  border-radius:10px;
 }
 
 .gp-row{
@@ -116,35 +114,68 @@ button{
   grid-template-columns:64px 1fr 120px;
   gap:14px;
   align-items:center;
-  margin-bottom:14px;
+  margin-bottom:16px;
 }
 
 .gp-icon{
   width:64px;
   height:64px;
-  border-radius:16px;
-  outline:2px solid #3b4a7a;
+  border-radius:18px;
+  box-shadow:0 0 18px rgba(76,201,240,.25);
 }
 
-.gp-name{font-weight:700}
+.gp-name{font-weight:700;font-size:16px}
 .gp-price{font-size:14px;color:var(--muted)}
 
-/* ===== BUTTONS ===== */
+/* ===== BUTTON ===== */
+button{
+  border:none;
+  border-radius:18px;
+  padding:18px;
+  font-size:18px;
+  font-weight:800;
+  cursor:pointer;
+  transition:.25s;
+  position:relative;
+  overflow:hidden;
+}
+
+button::after{
+  content:"";
+  position:absolute;
+  inset:0;
+  background:linear-gradient(120deg,transparent,rgba(255,255,255,.25),transparent);
+  transform:translateX(-120%);
+}
+
+button:hover::after{
+  transform:translateX(120%);
+  transition:.6s;
+}
+
+button:hover{
+  transform:translateY(-3px);
+  box-shadow:0 12px 30px rgba(0,0,0,.6);
+}
+
+/* ===== BUTTON COLOR ===== */
 .auto{
   background:linear-gradient(90deg,var(--accent),var(--accent2));
   color:#020617;
+  box-shadow:0 0 25px rgba(76,201,240,.5);
 }
 
 .run{
   background:linear-gradient(90deg,#22c55e,#4ade80);
   color:#022c22;
+  box-shadow:0 0 25px rgba(34,197,94,.5);
 }
 
 /* ===== RESULT ===== */
 .result{
-  background:#020617;
-  border-radius:16px;
-  padding:18px;
+  background:#050b1e;
+  border-radius:18px;
+  padding:20px;
   white-space:pre-line;
   line-height:1.7;
   font-size:15px;
@@ -168,9 +199,12 @@ button{
 
 <!-- LEFT -->
 <div class="left">
-  <div>
-    <img src="logo.png" class="logo" alt="Blox Fruits">
-    <div class="subtitle">Gift Gamepass Tool</div>
+  <div class="header">
+    <img src="Site-logo.webp" class="logo">
+    <div>
+      <div style="font-size:22px;font-weight:800">BLOX FRUITS</div>
+      <div class="subtitle">Robux → Gift Gamepass Tool</div>
+    </div>
   </div>
 
   <div class="card">
@@ -195,12 +229,12 @@ button{
   </div>
 
   <div class="card">
-    <h3> Kết quả </h3>
+    <h3>📊 Kết quả</h3>
     <div id="result" class="result">Chưa có dữ liệu</div>
   </div>
 
   <div class="footer">
-    Tool by Khiêm • Gift gamepass Blox Fruits
+    Tool by Khiêm • Gift Gamepass Blox Fruits
   </div>
 </div>
 
@@ -210,7 +244,7 @@ button{
 const gamepasses = [
   {name:"2x Boss Drop Chance", price:350, img:"https://static.wikia.nocookie.net/roblox-blox-piece/images/3/3a/BadgeBossDrops.png"},
   {name:"Fast Boat", price:350, img:"https://static.wikia.nocookie.net/roblox-blox-piece/images/f/fa/BadgeBoats.png"},
-  {name:"2x Money", price:450, img:"http://static.wikia.nocookie.net/roblox-blox-piece/images/c/cf/BadgeMoneyx2.png"},
+  {name:"2x Money", price:450, img:"https://static.wikia.nocookie.net/roblox-blox-piece/images/c/cf/BadgeMoneyx2.png"},
   {name:"2x Mastery", price:450, img:"https://static.wikia.nocookie.net/roblox-blox-piece/images/1/16/BadgeMasteryx2.png"},
   {name:"Dark Blade", price:1200, img:"https://static.wikia.nocookie.net/roblox-blox-piece/images/7/7f/BadgeDarkBlade.png"},
   {name:"Stat Reset", price:75, img:"https://static.wikia.nocookie.net/roblox-blox-piece/images/3/35/StatReset.png"},
@@ -241,7 +275,7 @@ function calculate(){
     const qty=+document.getElementById(`gp_${i}`).value;
     if(qty>0){
       sum+=qty*gp.price;
-      text+=`• ${qty} × ${gp.name} (${gp.price} ROBUX)\n`;
+      text+=`• ${qty} × ${gp.name} (${gp.price} RBX)\n`;
     }
   });
   showResult(sum,text);
@@ -251,17 +285,14 @@ function autoCombo(){
   let remain=+totalInput.value;
   gamepasses.forEach((_,i)=>document.getElementById(`gp_${i}`).value=0);
 
-  [...gamepasses]
-    .sort((a,b)=>b.price-a.price)
-    .forEach(gp=>{
-      const i=gamepasses.indexOf(gp);
-      const qty=Math.floor(remain/gp.price);
-      if(qty>0){
-        document.getElementById(`gp_${i}`).value=qty;
-        remain-=qty*gp.price;
-      }
-    });
-
+  [...gamepasses].sort((a,b)=>b.price-a.price).forEach(gp=>{
+    const i=gamepasses.indexOf(gp);
+    const qty=Math.floor(remain/gp.price);
+    if(qty>0){
+      document.getElementById(`gp_${i}`).value=qty;
+      remain-=qty*gp.price;
+    }
+  });
   calculate();
 }
 
@@ -272,9 +303,8 @@ function showResult(sum,text){
     diff<0?`<span class="warn">⚠️ DƯ ${-diff} ROBUX</span>`:
     `<span class="bad">❌ THIẾU ${diff} ROBUX</span>`;
 
-  result.innerHTML=text+`\nTổng dùng: ${sum} ROBUX\n${status}`;
+  result.innerHTML=text+`\nTổng dùng: ${sum} RBX\n${status}`;
 }
 </script>
 </body>
 </html>
-
