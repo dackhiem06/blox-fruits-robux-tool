@@ -27,7 +27,7 @@ body{
 }
 
 .container{
-  max-width:1050px;
+  max-width:1100px;
   margin:auto;
   padding:20px;
 }
@@ -62,10 +62,10 @@ input:focus{outline:2px solid var(--accent)}
 
 .row{
   display:grid;
-  grid-template-columns:50px 2fr 1fr 1fr auto;
-  gap:10px;
+  grid-template-columns:50px 2.5fr 1fr 1fr;
+  gap:12px;
   align-items:center;
-  margin-bottom:10px;
+  margin-bottom:12px;
 }
 
 .gp-icon{
@@ -77,16 +77,17 @@ input:focus{outline:2px solid var(--accent)}
   outline:1px solid #334155;
 }
 
+.gp-name{font-weight:600}
+.gp-price{color:var(--muted)}
+
 button{
   border:none;
   border-radius:8px;
-  padding:10px 14px;
-  font-weight:600;
+  padding:12px 14px;
+  font-weight:700;
   cursor:pointer;
 }
 
-.add{background:var(--accent);color:#020617}
-.del{background:var(--bad);color:white}
 .run{background:var(--ok);color:#020617;width:100%}
 
 .result{
@@ -114,7 +115,7 @@ button{
 <div class="container">
 
 <h1>🌀 BLOX FRUITS</h1>
-<div class="subtitle">Robux → Gift Gamepass Tool</div>
+<div class="subtitle">Robux → Gift Gamepass Tool (Danh sách cố định)</div>
 
 <div class="card">
   <label>💰 Robux trong acc</label>
@@ -125,9 +126,8 @@ button{
 </div>
 
 <div class="card">
-  <h3>🎁 Gamepass</h3>
+  <h3>🎁 Gamepass (Cố định)</h3>
   <div id="list"></div>
-  <button class="add" onclick="addRow()">➕ Thêm gói</button>
 </div>
 
 <div class="card">
@@ -135,83 +135,79 @@ button{
 </div>
 
 <div class="card">
-  <h3>📊 Kết quả</h3>
+  <h3>📊 Kết quả gift</h3>
   <div class="result" id="result">Chưa có dữ liệu</div>
 </div>
 
 <div class="footer">
-  Tool by Khiêm • Dùng để gift gamepass Blox Fruits
+  Tool by Khiêm • Gift gamepass Blox Fruits
 </div>
 
 </div>
 
 <script>
-const list=document.getElementById("list");
+const gamepasses = [
+  {name:"2x Boss Drop Chance", price:350, img:"https://static.wikia.nocookie.net/roblox-blox-piece/images/3/3a/BadgeBossDrops.png"},
+  {name:"Fast Boat", price:350, img:"https://static.wikia.nocookie.net/roblox-blox-piece/images/f/fa/BadgeBoats.png"},
+  {name:"2x Money", price:450, img:"http://static.wikia.nocookie.net/roblox-blox-piece/images/c/cf/BadgeMoneyx2.png"},
+  {name:"2x Mastery", price:450, img:"https://static.wikia.nocookie.net/roblox-blox-piece/images/1/16/BadgeMasteryx2.png"},
+  {name:"Dark Blade", price:1200, img:"https://static.wikia.nocookie.net/roblox-blox-piece/images/7/7f/BadgeDarkBlade.png"},
+  {name:"Fruit Notifier", price:2700, img:"https://static.wikia.nocookie.net/roblox-blox-piece/images/9/98/BadgeFruitNotifier.png"},
+  {name:"Stat Reset", price:75, img:"https://static.wikia.nocookie.net/roblox-blox-piece/images/3/35/StatReset.png"},
+  {name:"+1 Fruit Storage", price:400, img:"https://static.wikia.nocookie.net/roblox-blox-piece/images/6/6a/BadgeFruitStorage.png"}
+];
 
-function addRow(icon="",name="",price="",limit=""){
+const list = document.getElementById("list");
+
+gamepasses.forEach(gp=>{
   const d=document.createElement("div");
   d.className="row";
   d.innerHTML=`
-    <img class="gp-icon" src="${icon||'https://via.placeholder.com/46'}">
-    <input placeholder="Tên gói" value="${name}">
-    <input type="number" placeholder="Giá" value="${price}">
-    <input type="number" placeholder="Giới hạn" value="${limit}">
-    <button class="del" onclick="this.parentNode.remove()">✖</button>
+    <img class="gp-icon" src="${gp.img}">
+    <div>
+      <div class="gp-name">${gp.name}</div>
+      <div class="gp-price">${gp.price} Robux</div>
+    </div>
+    <input type="number" min="0" value="0" data-price="${gp.price}" data-name="${gp.name}">
+    <input type="number" min="0" value="99">
   `;
   list.appendChild(d);
-}
-
-addRow("https://i.imgur.com/Vc6Z6yB.png","x2 EXP",450,3);
-addRow("https://i.imgur.com/X0XnM0y.png","Fast Boat",350,2);
-addRow("https://i.imgur.com/D6ZQJvJ.png","Fruit Notifier",75,5);
+});
 
 function calculate(){
-  const total=+document.getElementById("total").value;
-  const maxOrders=+document.getElementById("maxOrders").value;
+  const total = +document.getElementById("total").value;
+  const maxOrders = +document.getElementById("maxOrders").value;
 
-  let items=[];
+  let sum = 0;
+  let count = 0;
+  let out = "";
+
   document.querySelectorAll(".row").forEach(r=>{
-    const name=r.children[1].value;
-    const price=+r.children[2].value;
-    const limit=+r.children[3].value||99;
-    if(name && price>0) items.push({name,price,limit});
+    const qty = +r.children[2].value;
+    const limit = +r.children[3].value;
+    const price = +r.children[2].dataset.price;
+    const name = r.children[2].dataset.name;
+
+    const used = Math.min(qty, limit);
+    if(used > 0){
+      sum += used * price;
+      count += used;
+      out += `• ${used} gói ${name} (${price} RBX)\n`;
+    }
   });
 
-  items.sort((a,b)=>b.price-a.price);
-  let best=null;
-
-  function dfs(sum,count,used){
-    if(count>maxOrders) return;
-    if(!best || Math.abs(total-sum)<Math.abs(total-best.sum)){
-      best={sum,used:{...used}};
-    }
-    items.forEach(it=>{
-      if((used[it.name]||0)<it.limit){
-        used[it.name]=(used[it.name]||0)+1;
-        dfs(sum+it.price,count+1,used);
-        used[it.name]--;
-      }
-    });
+  if(count > maxOrders){
+    result.innerHTML = `<span class="bad">❌ Vượt quá giới hạn tổng số gift</span>`;
+    return;
   }
 
-  dfs(0,0,{});
+  let diff = sum - total;
+  let status =
+    diff === 0 ? `<span class="ok">✅ DÙNG HẾT ROBUX</span>` :
+    diff < 0 ? `<span class="warn">⚠️ DƯ ${-diff} RBX</span>` :
+               `<span class="bad">❌ THIẾU ${diff} RBX</span>`;
 
-  let out="";
-  Object.entries(best.used).forEach(([k,v])=>{
-    if(v>0){
-      const p=items.find(i=>i.name===k).price;
-      out+=`• ${v} gói ${k} (${p} RBX)\n`;
-    }
-  });
-
-  let diff=best.sum-total;
-  let status=diff===0
-    ? `<span class="ok">✅ DÙNG HẾT ROBUX</span>`
-    : diff<0
-      ? `<span class="warn">⚠️ DƯ ${-diff} RBX</span>`
-      : `<span class="bad">❌ THIẾU ${diff} RBX</span>`;
-
-  result.innerHTML=out+`\nTổng dùng: ${best.sum} RBX\n${status}`;
+  result.innerHTML = out + `\nTổng dùng: ${sum} RBX\n${status}`;
 }
 </script>
 
