@@ -29,20 +29,19 @@ body{
   min-height:100vh;
   color:var(--text);
   background:
-    linear-gradient(180deg,rgba(5,10,30,.9),rgba(2,6,23,.96)),
+    linear-gradient(180deg,rgba(5,10,30,.92),rgba(2,6,23,.97)),
     url("https://upload.wikimedia.org/wikipedia/commons/0/00/Center_of_the_Milky_Way_Galaxy_IV_%E2%80%93_Composite.jpg")
     center/cover no-repeat;
-  overflow-y:auto;
 }
 
-/* SCROLL BAR NEON */
+/* SCROLL BAR */
 ::-webkit-scrollbar{width:10px}
-::-webkit-scrollbar-track{background:#020617}
 ::-webkit-scrollbar-thumb{
   background:linear-gradient(180deg,#4cc9f0,#7c7cff);
   border-radius:20px;
   box-shadow:0 0 14px rgba(124,124,255,.9);
 }
+::-webkit-scrollbar-track{background:#020617}
 
 /* LAYOUT */
 .container{
@@ -73,9 +72,9 @@ body{
 
 /* TITLE */
 .main-title{
-  font-size:32px;
-  font-weight:800;
   text-align:center;
+  font-size:34px;
+  font-weight:800;
   letter-spacing:1px;
 }
 
@@ -92,15 +91,18 @@ input{
   font-size:16px;
   font-weight:600;
   outline:1px solid #334155;
+  transition:.25s;
 }
-input:focus{
+
+/* INPUT HIGHLIGHT WHEN VALUE > 0 */
+input.active{
   outline:2px solid var(--accent);
-  box-shadow:0 0 18px rgba(76,201,240,.4);
+  box-shadow:0 0 22px rgba(76,201,240,.8);
 }
 
 /* GAMEPASS */
 .gamepass-list{
-  max-height:520px;
+  max-height:560px;
   overflow:auto;
   padding-right:6px;
 }
@@ -111,15 +113,6 @@ input:focus{
   gap:14px;
   align-items:center;
   margin-bottom:14px;
-  padding:12px;
-  border-radius:18px;
-  transition:.25s;
-}
-.gp-row:hover{
-  transform:scale(1.05);
-  box-shadow:
-    0 0 0 2px rgba(124,124,255,.9),
-    0 0 28px rgba(76,201,240,.7);
 }
 
 .gp-icon{
@@ -128,23 +121,12 @@ input:focus{
   border-radius:18px;
   box-shadow:0 0 16px rgba(76,201,240,.3);
 }
+
 .gp-name{font-weight:700}
 .gp-price{font-size:14px;color:var(--muted)}
 
-/* OPTIMAL */
-.optimal{
-  outline:2px solid var(--accent);
-  animation:pulse 1.6s infinite;
-}
-@keyframes pulse{
-  0%{box-shadow:0 0 12px rgba(76,201,240,.4)}
-  50%{box-shadow:0 0 28px rgba(124,124,255,.9)}
-  100%{box-shadow:0 0 12px rgba(76,201,240,.4)}
-}
-
-/* ===== BUTTON PRO ===== */
+/* BUTTON */
 button{
-  font-family:'Poppins', sans-serif; /* <- thêm đây */
   position:relative;
   border:none;
   border-radius:18px;
@@ -156,7 +138,6 @@ button{
   transition:.25s;
 }
 
-/* Shine */
 button::before{
   content:"";
   position:absolute;
@@ -169,44 +150,27 @@ button:hover::before{
   transition:.7s;
 }
 
-/* Electric border */
-button::after{
-  content:"";
-  position:absolute;
-  inset:0;
-  border-radius:18px;
-  box-shadow:0 0 0 rgba(0,0,0,0);
-  pointer-events:none;
-}
-
 button:hover{
   transform:translateY(-4px);
 }
-
 button:active{
   transform:translateY(2px) scale(.98);
 }
 
-/* AUTO */
 .auto{
   background:linear-gradient(90deg,var(--accent),var(--accent2));
   color:#020617;
 }
-.auto:hover::after{
-  box-shadow:
-    0 0 0 2px #7c7cff,
-    0 0 28px rgba(124,124,255,.9);
+.auto:hover{
+  box-shadow:0 0 0 2px #7c7cff,0 0 30px rgba(124,124,255,.9);
 }
 
-/* RUN */
 .run{
   background:linear-gradient(90deg,#22c55e,#4ade80);
   color:#022c22;
 }
-.run:hover::after{
-  box-shadow:
-    0 0 0 2px #22c55e,
-    0 0 28px rgba(34,197,94,.9);
+.run:hover{
+  box-shadow:0 0 0 2px #22c55e,0 0 30px rgba(34,197,94,.9);
 }
 
 /* RESULT */
@@ -216,6 +180,7 @@ button:active{
   padding:20px;
   white-space:pre-line;
 }
+
 .ok{color:var(--ok)}
 .warn{color:var(--warn)}
 .bad{color:var(--bad)}
@@ -294,6 +259,11 @@ gamepasses.forEach((gp,i)=>{
     <input type="number" min="0" value="0" id="gp_${i}">
   `;
   list.appendChild(row);
+
+  const input=row.querySelector("input");
+  input.addEventListener("input",()=>{
+    input.classList.toggle("active",+input.value>0);
+  });
 });
 
 function calculate(){
@@ -315,16 +285,19 @@ function calculate(){
 
 function autoCombo(){
   let remain=+totalInput.value;
-  document.querySelectorAll(".gp-row").forEach(r=>r.classList.remove("optimal"));
-  gamepasses.forEach((_,i)=>document.getElementById("gp_"+i).value=0);
+  document.querySelectorAll(".gp-row input").forEach(i=>{
+    i.value=0;
+    i.classList.remove("active");
+  });
 
   [...gamepasses].map((g,i)=>({...g,i}))
     .sort((a,b)=>b.price-a.price)
     .forEach(g=>{
       const q=Math.floor(remain/g.price);
       if(q>0){
-        document.getElementById("gp_"+g.i).value=q;
-        document.querySelectorAll(".gp-row")[g.i].classList.add("optimal");
+        const inp=document.getElementById("gp_"+g.i);
+        inp.value=q;
+        inp.classList.add("active");
         remain-=q*g.price;
       }
     });
@@ -333,4 +306,3 @@ function autoCombo(){
 </script>
 </body>
 </html>
-
