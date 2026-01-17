@@ -9,9 +9,9 @@
 
 <style>
 :root{
-  --bg:#020617;
-  --card:#0f172a;
-  --accent:#38bdf8;
+  --card:#0b1224ee;
+  --accent:#4cc9f0;
+  --accent2:#7c7cff;
   --ok:#22c55e;
   --warn:#facc15;
   --bad:#ef4444;
@@ -25,8 +25,10 @@ body{
   margin:0;
   height:100vh;
   font-family:'Poppins',sans-serif;
-  background:radial-gradient(circle at top,#1e293b 0%,#020617 65%);
   color:var(--text);
+  background:
+    linear-gradient(180deg,rgba(5,10,30,.88),rgba(2,6,23,.95)),
+    url("bg.jpg") center/cover no-repeat;
   overflow:hidden;
 }
 
@@ -34,13 +36,12 @@ body{
   max-width:1600px;
   height:100vh;
   margin:auto;
-  padding:26px 32px;
+  padding:26px 36px;
   display:grid;
-  grid-template-columns: 45% 55%;
-  gap:26px;
+  grid-template-columns: 46% 54%;
+  gap:28px;
 }
 
-/* ===== LEFT / RIGHT ===== */
 .left,.right{
   display:flex;
   flex-direction:column;
@@ -49,23 +50,23 @@ body{
 }
 
 /* ===== HEADER ===== */
-h1{
-  margin:0;
-  color:var(--accent);
-  font-size:34px;
+.logo{
+  height:58px;
+  margin-bottom:4px;
 }
 
 .subtitle{
-  color:var(--muted);
   font-size:15px;
+  color:var(--muted);
 }
 
 /* ===== CARD ===== */
 .card{
-  background:linear-gradient(180deg,#0f172a,#020617);
+  background:var(--card);
   border-radius:18px;
   padding:22px;
-  box-shadow:0 12px 35px rgba(0,0,0,.45);
+  box-shadow:0 12px 40px rgba(0,0,0,.55);
+  backdrop-filter:blur(10px);
 }
 
 label{
@@ -106,7 +107,7 @@ button{
 
 .gamepass-list::-webkit-scrollbar{width:6px}
 .gamepass-list::-webkit-scrollbar-thumb{
-  background:#334155;
+  background:#3b4a7a;
   border-radius:10px;
 }
 
@@ -122,21 +123,21 @@ button{
   width:64px;
   height:64px;
   border-radius:16px;
-  outline:2px solid #334155;
+  outline:2px solid #3b4a7a;
 }
 
 .gp-name{font-weight:700}
 .gp-price{font-size:14px;color:var(--muted)}
 
-/* ===== ACTION ===== */
+/* ===== BUTTONS ===== */
+.auto{
+  background:linear-gradient(90deg,var(--accent),var(--accent2));
+  color:#020617;
+}
+
 .run{
   background:linear-gradient(90deg,#22c55e,#4ade80);
   color:#022c22;
-}
-
-.auto{
-  background:linear-gradient(90deg,#38bdf8,#60a5fa);
-  color:#020617;
 }
 
 /* ===== RESULT ===== */
@@ -168,7 +169,7 @@ button{
 <!-- LEFT -->
 <div class="left">
   <div>
-    <h1>🌀 BLOX FRUITS</h1>
+    <img src="logo.png" class="logo" alt="Blox Fruits">
     <div class="subtitle">Robux → Gift Gamepass Tool</div>
   </div>
 
@@ -212,12 +213,13 @@ const gamepasses = [
   {name:"2x Money", price:450, img:"http://static.wikia.nocookie.net/roblox-blox-piece/images/c/cf/BadgeMoneyx2.png"},
   {name:"2x Mastery", price:450, img:"https://static.wikia.nocookie.net/roblox-blox-piece/images/1/16/BadgeMasteryx2.png"},
   {name:"Dark Blade", price:1200, img:"https://static.wikia.nocookie.net/roblox-blox-piece/images/7/7f/BadgeDarkBlade.png"},
-  {name:"Fruit Notifier", price:2700, img:"https://static.wikia.nocookie.net/roblox-blox-piece/images/9/98/BadgeFruitNotifier.png"},
   {name:"Stat Reset", price:75, img:"https://static.wikia.nocookie.net/roblox-blox-piece/images/3/35/StatReset.png"},
   {name:"+1 Fruit Storage", price:400, img:"https://static.wikia.nocookie.net/roblox-blox-piece/images/6/6a/BadgeFruitStorage.png"}
 ];
 
-const list = document.getElementById("list");
+const list=document.getElementById("list");
+const totalInput=document.getElementById("total");
+const result=document.getElementById("result");
 
 gamepasses.forEach((gp,i)=>{
   const row=document.createElement("div");
@@ -234,7 +236,6 @@ gamepasses.forEach((gp,i)=>{
 });
 
 function calculate(){
-  const total=+totalInput.value;
   let sum=0,text="";
   gamepasses.forEach((gp,i)=>{
     const qty=+document.getElementById(`gp_${i}`).value;
@@ -247,17 +248,16 @@ function calculate(){
 }
 
 function autoCombo(){
-  const total=+totalInput.value;
-  gamepasses.forEach((_,i)=>gpQty(i,0));
-  let remain=total;
+  let remain=+totalInput.value;
+  gamepasses.forEach((_,i)=>document.getElementById(`gp_${i}`).value=0);
 
-  gamepasses
+  [...gamepasses]
     .sort((a,b)=>b.price-a.price)
     .forEach(gp=>{
       const i=gamepasses.indexOf(gp);
       const qty=Math.floor(remain/gp.price);
       if(qty>0){
-        gpQty(i,qty);
+        document.getElementById(`gp_${i}`).value=qty;
         remain-=qty*gp.price;
       }
     });
@@ -265,13 +265,8 @@ function autoCombo(){
   calculate();
 }
 
-function gpQty(i,v){
-  document.getElementById(`gp_${i}`).value=v;
-}
-
 function showResult(sum,text){
-  const total=+totalInput.value;
-  const diff=sum-total;
+  const diff=sum-(+totalInput.value);
   let status=
     diff===0?`<span class="ok">✅ DÙNG HẾT ROBUX</span>`:
     diff<0?`<span class="warn">⚠️ DƯ ${-diff} RBX</span>`:
@@ -279,9 +274,6 @@ function showResult(sum,text){
 
   result.innerHTML=text+`\nTổng dùng: ${sum} RBX\n${status}`;
 }
-
-const totalInput=document.getElementById("total");
-const result=document.getElementById("result");
 </script>
 </body>
 </html>
