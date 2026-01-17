@@ -6,6 +6,8 @@
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 
 <style>
+@import url('https://fonts.googleapis.com/css2?family=Poppins:wght@400;600;700&display=swap');
+
 :root{
   --bg:#020617;
   --card:#0f172a;
@@ -21,7 +23,7 @@
 
 body{
   margin:0;
-  font-family:Inter,Arial,sans-serif;
+  font-family:'Poppins',sans-serif;
   background:radial-gradient(circle at top,#1e293b 0%,#020617 65%);
   color:var(--text);
 }
@@ -29,73 +31,101 @@ body{
 .container{
   max-width:1100px;
   margin:auto;
-  padding:20px;
+  padding:24px;
 }
 
-h1{text-align:center;color:var(--accent)}
-.subtitle{text-align:center;color:var(--muted);margin-bottom:25px}
+h1{
+  text-align:center;
+  color:var(--accent);
+  font-weight:700;
+  letter-spacing:1px;
+}
+
+.subtitle{
+  text-align:center;
+  color:var(--muted);
+  font-size:15px;
+  margin-bottom:28px;
+}
 
 .card{
-  background:var(--card);
-  border-radius:14px;
-  padding:20px;
-  margin-bottom:20px;
-  box-shadow:0 10px 30px rgba(0,0,0,.45);
+  background:linear-gradient(180deg,#0f172a,#020617);
+  border-radius:16px;
+  padding:22px;
+  margin-bottom:22px;
+  box-shadow:0 12px 35px rgba(0,0,0,.45);
 }
 
-label{font-size:14px;color:var(--muted)}
+label{
+  font-size:15px;
+  font-weight:600;
+  color:var(--muted);
+}
 
 input{
   width:100%;
-  padding:11px;
-  margin-top:6px;
-  margin-bottom:14px;
-  border-radius:10px;
+  padding:13px 14px;
+  margin-top:8px;
+  margin-bottom:16px;
+  border-radius:12px;
   border:none;
   background:#020617;
   color:white;
   outline:1px solid #334155;
-  font-size:14px;
+  font-size:16px;
+  font-weight:600;
 }
 
 input:focus{outline:2px solid var(--accent)}
 
 .row{
   display:grid;
-  grid-template-columns:50px 2.5fr 1fr 1fr;
-  gap:12px;
+  grid-template-columns:56px 1fr 140px;
+  gap:14px;
   align-items:center;
-  margin-bottom:12px;
+  margin-bottom:14px;
 }
 
 .gp-icon{
-  width:46px;
-  height:46px;
-  border-radius:10px;
+  width:56px;
+  height:56px;
+  border-radius:14px;
   object-fit:cover;
-  background:#020617;
-  outline:1px solid #334155;
+  outline:2px solid #334155;
 }
 
-.gp-name{font-weight:600}
-.gp-price{color:var(--muted)}
+.gp-name{
+  font-size:16px;
+  font-weight:700;
+}
+
+.gp-price{
+  font-size:14px;
+  color:var(--muted);
+}
 
 button{
   border:none;
-  border-radius:8px;
-  padding:12px 14px;
+  border-radius:12px;
+  padding:16px;
   font-weight:700;
+  font-size:17px;
   cursor:pointer;
 }
 
-.run{background:var(--ok);color:#020617;width:100%}
+.run{
+  background:linear-gradient(90deg,#22c55e,#4ade80);
+  color:#022c22;
+  width:100%;
+}
 
 .result{
   background:#020617;
-  border-radius:12px;
-  padding:16px;
+  border-radius:14px;
+  padding:18px;
   white-space:pre-line;
-  line-height:1.6;
+  line-height:1.7;
+  font-size:15px;
 }
 
 .ok{color:var(--ok)}
@@ -106,7 +136,7 @@ button{
   text-align:center;
   font-size:13px;
   color:var(--muted);
-  margin-top:20px;
+  margin-top:26px;
 }
 </style>
 </head>
@@ -115,18 +145,15 @@ button{
 <div class="container">
 
 <h1>🌀 BLOX FRUITS</h1>
-<div class="subtitle">Robux → Gift Gamepass Tool (Danh sách cố định)</div>
+<div class="subtitle">Robux → Gift Gamepass Tool</div>
 
 <div class="card">
   <label>💰 Robux trong acc</label>
   <input id="total" type="number" value="3250">
-
-  <label>🔢 Giới hạn tổng số gift</label>
-  <input id="maxOrders" type="number" value="5">
 </div>
 
 <div class="card">
-  <h3>🎁 Gamepass (Cố định)</h3>
+  <h3>🎁 Gamepass</h3>
   <div id="list"></div>
 </div>
 
@@ -169,37 +196,24 @@ gamepasses.forEach(gp=>{
       <div class="gp-price">${gp.price} Robux</div>
     </div>
     <input type="number" min="0" value="0" data-price="${gp.price}" data-name="${gp.name}">
-    <input type="number" min="0" value="99">
   `;
   list.appendChild(d);
 });
 
 function calculate(){
   const total = +document.getElementById("total").value;
-  const maxOrders = +document.getElementById("maxOrders").value;
-
   let sum = 0;
-  let count = 0;
   let out = "";
 
-  document.querySelectorAll(".row").forEach(r=>{
-    const qty = +r.children[2].value;
-    const limit = +r.children[3].value;
-    const price = +r.children[2].dataset.price;
-    const name = r.children[2].dataset.name;
-
-    const used = Math.min(qty, limit);
-    if(used > 0){
-      sum += used * price;
-      count += used;
-      out += `• ${used} gói ${name} (${price} RBX)\n`;
+  document.querySelectorAll(".row input").forEach(i=>{
+    const qty = +i.value;
+    const price = +i.dataset.price;
+    const name = i.dataset.name;
+    if(qty > 0){
+      sum += qty * price;
+      out += `• ${qty} × ${name} (${price} RBX)\n`;
     }
   });
-
-  if(count > maxOrders){
-    result.innerHTML = `<span class="bad">❌ Vượt quá giới hạn tổng số gift</span>`;
-    return;
-  }
 
   let diff = sum - total;
   let status =
