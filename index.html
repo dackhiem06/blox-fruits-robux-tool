@@ -1,0 +1,225 @@
+<!DOCTYPE html>
+<html lang="vi">
+<head>
+<meta charset="UTF-8">
+<title>Blox Fruits – Robux Gift Tool</title>
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+<style>
+:root{
+  --bg:#020617;
+  --card:#0f172a;
+  --accent:#38bdf8;
+  --ok:#22c55e;
+  --warn:#facc15;
+  --bad:#ef4444;
+  --text:#f9fafb;
+  --muted:#cbd5f5;
+}
+
+*{box-sizing:border-box}
+
+/* ===== SỐ 2: NỀN SÁNG HƠN ===== */
+body{
+  margin:0;
+  font-family:Inter,Arial,sans-serif;
+  background:
+    radial-gradient(circle at top, #1e293b 0%, #020617 65%);
+  color:var(--text);
+}
+
+.container{
+  max-width:1000px;
+  margin:auto;
+  padding:20px;
+}
+
+h1{text-align:center;color:var(--accent)}
+.subtitle{text-align:center;color:var(--muted);margin-bottom:25px}
+
+.card{
+  background:var(--card);
+  border-radius:14px;
+  padding:20px;
+  margin-bottom:20px;
+  box-shadow:0 10px 30px rgba(0,0,0,.45);
+}
+
+label{
+  font-size:14px;
+  color:var(--muted);
+}
+
+/* ===== SỐ 4: INPUT SÁNG & RÕ ===== */
+input{
+  width:100%;
+  padding:11px;
+  margin-top:6px;
+  margin-bottom:14px;
+  border-radius:10px;
+  border:none;
+  background:#020617;
+  color:#f9fafb;
+  font-size:15px;
+  outline:1px solid #334155;
+}
+
+input::placeholder{
+  color:#94a3b8;
+}
+
+input:focus{
+  outline:2px solid var(--accent);
+  background:#020617;
+}
+
+.row{
+  display:grid;
+  grid-template-columns:2fr 1fr 1fr auto;
+  gap:10px;
+  margin-bottom:10px;
+}
+
+button{
+  border:none;
+  border-radius:8px;
+  padding:10px 14px;
+  font-weight:600;
+  cursor:pointer;
+}
+
+.add{background:var(--accent);color:#020617}
+.del{background:var(--bad);color:white}
+.run{background:var(--ok);color:#020617;width:100%}
+
+.result{
+  background:#020617;
+  border-radius:12px;
+  padding:16px;
+  white-space:pre-line;
+  font-size:15px;
+  line-height:1.6;
+}
+
+.ok{color:var(--ok)}
+.warn{color:var(--warn)}
+.bad{color:var(--bad)}
+
+.footer{
+  text-align:center;
+  font-size:13px;
+  color:var(--muted);
+  margin-top:20px;
+}
+</style>
+</head>
+
+<body>
+<div class="container">
+
+<h1>🌀 BLOX FRUITS</h1>
+<div class="subtitle">Robux → Gift Gamepass Tool</div>
+
+<div class="card">
+  <label>💰 Robux trong acc</label>
+  <input id="total" type="number" value="3250">
+
+  <label>🔢 Giới hạn tổng số gift</label>
+  <input id="maxOrders" type="number" value="5">
+</div>
+
+<div class="card">
+  <h3>🎁 Gamepass</h3>
+  <div id="list"></div>
+  <button class="add" onclick="addRow()">➕ Thêm gói</button>
+</div>
+
+<div class="card">
+  <button class="run" onclick="calculate()">⚙️ TÍNH TOÁN</button>
+</div>
+
+<div class="card">
+  <h3>📊 Kết quả gift</h3>
+  <div class="result" id="result">Chưa có dữ liệu</div>
+</div>
+
+<div class="footer">
+  Tool by Khiêm • Dùng cho gift Gamepass Blox Fruits
+</div>
+
+</div>
+
+<script>
+const list=document.getElementById("list");
+
+function addRow(name="",price="",limit=""){
+  const d=document.createElement("div");
+  d.className="row";
+  d.innerHTML=`
+    <input placeholder="Tên gói" value="${name}">
+    <input type="number" placeholder="Giá Robux" value="${price}">
+    <input type="number" placeholder="Giới hạn" value="${limit}">
+    <button class="del" onclick="this.parentNode.remove()">✖</button>
+  `;
+  list.appendChild(d);
+}
+
+addRow("x2 EXP",450,3);
+addRow("Fast Boat",350,2);
+addRow("Fruit Notifier",75,5);
+
+function calculate(){
+  const total=+document.getElementById("total").value;
+  const maxOrders=+document.getElementById("maxOrders").value;
+
+  let items=[];
+  document.querySelectorAll(".row").forEach(r=>{
+    const name=r.children[0].value;
+    const price=+r.children[1].value;
+    const limit=+r.children[2].value||99;
+    if(name && price>0) items.push({name,price,limit});
+  });
+
+  items.sort((a,b)=>b.price-a.price);
+
+  let best=null;
+
+  function dfs(sum,count,used){
+    if(count>maxOrders) return;
+    if(!best || Math.abs(total-sum)<Math.abs(total-best.sum)){
+      best={sum,used:JSON.parse(JSON.stringify(used))};
+    }
+    items.forEach(it=>{
+      if((used[it.name]||0)<it.limit){
+        used[it.name]=(used[it.name]||0)+1;
+        dfs(sum+it.price,count+1,used);
+        used[it.name]--;
+      }
+    });
+  }
+
+  dfs(0,0,{});
+
+  let out="";
+  Object.entries(best.used).forEach(([k,v])=>{
+    if(v>0){
+      const p=items.find(i=>i.name===k).price;
+      out+=`• ${v} gói ${k} (${p} RBX)\n`;
+    }
+  });
+
+  let diff=best.sum-total;
+  let status=diff===0
+    ? `<span class="ok">✅ DÙNG HẾT ROBUX</span>`
+    : diff<0
+      ? `<span class="warn">⚠️ DƯ ${-diff} RBX</span>`
+      : `<span class="bad">❌ THIẾU ${diff} RBX</span>`;
+
+  result.innerHTML=
+    out+
+    `\nTổng dùng: ${best.sum} RBX\n${status}`;
+}
+</script>
+
+</body>
+</html>
