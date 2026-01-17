@@ -35,13 +35,13 @@ body{
   overflow-y:auto;
 }
 
-/* NEON SCROLLBAR */
+/* SCROLL BAR NEON */
 ::-webkit-scrollbar{width:10px}
 ::-webkit-scrollbar-track{background:#020617}
 ::-webkit-scrollbar-thumb{
   background:linear-gradient(180deg,#4cc9f0,#7c7cff);
   border-radius:20px;
-  box-shadow:0 0 12px rgba(124,124,255,.9);
+  box-shadow:0 0 14px rgba(124,124,255,.9);
 }
 
 /* LAYOUT */
@@ -80,10 +80,7 @@ body{
 }
 
 /* INPUT */
-label{
-  font-weight:600;
-  color:var(--muted);
-}
+label{font-weight:600;color:var(--muted)}
 input{
   width:100%;
   padding:14px;
@@ -101,7 +98,7 @@ input:focus{
   box-shadow:0 0 18px rgba(76,201,240,.4);
 }
 
-/* GAMEPASS LIST */
+/* GAMEPASS */
 .gamepass-list{
   max-height:520px;
   overflow:auto;
@@ -134,7 +131,7 @@ input:focus{
 .gp-name{font-weight:700}
 .gp-price{font-size:14px;color:var(--muted)}
 
-/* OPTIMAL COMBO */
+/* OPTIMAL */
 .optimal{
   outline:2px solid var(--accent);
   animation:pulse 1.6s infinite;
@@ -145,25 +142,70 @@ input:focus{
   100%{box-shadow:0 0 12px rgba(76,201,240,.4)}
 }
 
-/* BUTTON */
+/* ===== BUTTON PRO ===== */
 button{
+  position:relative;
   border:none;
   border-radius:18px;
-  padding:18px;
+  padding:20px;
   font-size:18px;
-  font-weight:700;
+  font-weight:800;
   cursor:pointer;
+  overflow:hidden;
   transition:.25s;
 }
-button:hover{
-  transform:translateY(-3px);
-  box-shadow:0 12px 30px rgba(0,0,0,.6);
+
+/* Shine */
+button::before{
+  content:"";
+  position:absolute;
+  inset:-2px;
+  background:linear-gradient(120deg,transparent,rgba(255,255,255,.6),transparent);
+  transform:translateX(-120%);
 }
+button:hover::before{
+  transform:translateX(120%);
+  transition:.7s;
+}
+
+/* Electric border */
+button::after{
+  content:"";
+  position:absolute;
+  inset:0;
+  border-radius:18px;
+  box-shadow:0 0 0 rgba(0,0,0,0);
+  pointer-events:none;
+}
+
+button:hover{
+  transform:translateY(-4px);
+}
+
+button:active{
+  transform:translateY(2px) scale(.98);
+}
+
+/* AUTO */
 .auto{
   background:linear-gradient(90deg,var(--accent),var(--accent2));
+  color:#020617;
 }
+.auto:hover::after{
+  box-shadow:
+    0 0 0 2px #7c7cff,
+    0 0 28px rgba(124,124,255,.9);
+}
+
+/* RUN */
 .run{
   background:linear-gradient(90deg,#22c55e,#4ade80);
+  color:#022c22;
+}
+.run:hover::after{
+  box-shadow:
+    0 0 0 2px #22c55e,
+    0 0 28px rgba(34,197,94,.9);
 }
 
 /* RESULT */
@@ -222,7 +264,6 @@ button:hover{
       Tool by Khiêm • Gift Gamepass
     </div>
   </div>
-
 </div>
 
 <script>
