@@ -5,9 +5,10 @@
 <title>Blox Fruits – Robux Gift Tool</title>
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 
-<style>
-@import url('https://fonts.googleapis.com/css2?family=Poppins:wght@400;600;700&display=swap');
+<!-- FONT -->
+<link href="https://fonts.googleapis.com/css2?family=Poppins:wght@400;600;700&display=swap" rel="stylesheet">
 
+<style>
 :root{
   --bg:#020617;
   --card:#0f172a;
@@ -23,51 +24,63 @@
 
 body{
   margin:0;
+  height:100vh;
+  overflow:hidden;
   font-family:'Poppins',sans-serif;
   background:radial-gradient(circle at top,#1e293b 0%,#020617 65%);
   color:var(--text);
 }
 
+/* ===== LAYOUT ===== */
 .container{
-  max-width:1100px;
+  max-width:1600px;
   margin:auto;
-  padding:24px;
+  height:100vh;
+  display:grid;
+  grid-template-columns: 42% 58%;
+  gap:26px;
+  padding:26px 32px;
 }
 
+.left,.right{
+  display:flex;
+  flex-direction:column;
+  gap:20px;
+}
+
+/* ===== COMMON ===== */
 h1{
   text-align:center;
   color:var(--accent);
-  font-weight:700;
+  font-size:34px;
   letter-spacing:1px;
+  margin:0;
 }
 
 .subtitle{
   text-align:center;
   color:var(--muted);
   font-size:15px;
-  margin-bottom:28px;
+  margin-bottom:6px;
 }
 
 .card{
   background:linear-gradient(180deg,#0f172a,#020617);
-  border-radius:16px;
+  border-radius:18px;
   padding:22px;
-  margin-bottom:22px;
   box-shadow:0 12px 35px rgba(0,0,0,.45);
 }
 
 label{
-  font-size:15px;
   font-weight:600;
   color:var(--muted);
 }
 
 input{
   width:100%;
-  padding:13px 14px;
+  padding:14px;
   margin-top:8px;
-  margin-bottom:16px;
-  border-radius:12px;
+  border-radius:14px;
   border:none;
   background:#020617;
   color:white;
@@ -78,18 +91,44 @@ input{
 
 input:focus{outline:2px solid var(--accent)}
 
-.row{
+button{
+  border:none;
+  border-radius:14px;
+  padding:18px;
+  font-size:18px;
+  font-weight:700;
+  cursor:pointer;
+}
+
+/* ===== GAMEPASS LIST ===== */
+.gamepass-list{
+  display:flex;
+  flex-direction:column;
+  gap:14px;
+  overflow-y:auto;
+  max-height:calc(100vh - 300px);
+  padding-right:6px;
+}
+
+.gamepass-list::-webkit-scrollbar{
+  width:6px;
+}
+.gamepass-list::-webkit-scrollbar-thumb{
+  background:#334155;
+  border-radius:10px;
+}
+
+.gp-row{
   display:grid;
-  grid-template-columns:56px 1fr 140px;
+  grid-template-columns:64px 1fr 120px;
   gap:14px;
   align-items:center;
-  margin-bottom:14px;
 }
 
 .gp-icon{
-  width:56px;
-  height:56px;
-  border-radius:14px;
+  width:64px;
+  height:64px;
+  border-radius:16px;
   object-fit:cover;
   outline:2px solid #334155;
 }
@@ -104,24 +143,16 @@ input:focus{outline:2px solid var(--accent)}
   color:var(--muted);
 }
 
-button{
-  border:none;
-  border-radius:12px;
-  padding:16px;
-  font-weight:700;
-  font-size:17px;
-  cursor:pointer;
-}
-
+/* ===== ACTION ===== */
 .run{
   background:linear-gradient(90deg,#22c55e,#4ade80);
   color:#022c22;
-  width:100%;
 }
 
+/* ===== RESULT ===== */
 .result{
   background:#020617;
-  border-radius:14px;
+  border-radius:16px;
   padding:18px;
   white-space:pre-line;
   line-height:1.7;
@@ -136,7 +167,7 @@ button{
   text-align:center;
   font-size:13px;
   color:var(--muted);
-  margin-top:26px;
+  margin-top:auto;
 }
 </style>
 </head>
@@ -144,31 +175,39 @@ button{
 <body>
 <div class="container">
 
-<h1>🌀 BLOX FRUITS</h1>
-<div class="subtitle">Robux → Gift Gamepass Tool</div>
+  <!-- LEFT -->
+  <div class="left">
+    <div>
+      <h1>🌀 BLOX FRUITS</h1>
+      <div class="subtitle">Robux → Gift Gamepass Tool</div>
+    </div>
 
-<div class="card">
-  <label>💰 Robux trong acc</label>
-  <input id="total" type="number" value="3250">
-</div>
+    <div class="card">
+      <label>💰 Robux trong acc</label>
+      <input id="total" type="number" value="3250">
+    </div>
 
-<div class="card">
-  <h3>🎁 Gamepass</h3>
-  <div id="list"></div>
-</div>
+    <div class="card">
+      <h3>🎁 Gamepass</h3>
+      <div id="list" class="gamepass-list"></div>
+    </div>
+  </div>
 
-<div class="card">
-  <button class="run" onclick="calculate()">⚙️ TÍNH TOÁN</button>
-</div>
+  <!-- RIGHT -->
+  <div class="right">
+    <div class="card">
+      <button class="run" onclick="calculate()">⚙️ TÍNH TOÁN</button>
+    </div>
 
-<div class="card">
-  <h3>📊 Kết quả gift</h3>
-  <div class="result" id="result">Chưa có dữ liệu</div>
-</div>
+    <div class="card">
+      <h3>📊 Kết quả gift</h3>
+      <div id="result" class="result">Chưa có dữ liệu</div>
+    </div>
 
-<div class="footer">
-  Tool by Khiêm • Gift gamepass Blox Fruits
-</div>
+    <div class="footer">
+      Tool by Khiêm • Gift gamepass Blox Fruits
+    </div>
+  </div>
 
 </div>
 
@@ -187,31 +226,33 @@ const gamepasses = [
 const list = document.getElementById("list");
 
 gamepasses.forEach(gp=>{
-  const d=document.createElement("div");
-  d.className="row";
-  d.innerHTML=`
+  const row = document.createElement("div");
+  row.className = "gp-row";
+  row.innerHTML = `
     <img class="gp-icon" src="${gp.img}">
     <div>
       <div class="gp-name">${gp.name}</div>
       <div class="gp-price">${gp.price} Robux</div>
     </div>
-    <input type="number" min="0" value="0" data-price="${gp.price}" data-name="${gp.name}">
+    <input type="number" min="0" value="0"
+      data-price="${gp.price}"
+      data-name="${gp.name}">
   `;
-  list.appendChild(d);
+  list.appendChild(row);
 });
 
 function calculate(){
   const total = +document.getElementById("total").value;
   let sum = 0;
-  let out = "";
+  let text = "";
 
-  document.querySelectorAll(".row input").forEach(i=>{
+  document.querySelectorAll(".gp-row input").forEach(i=>{
     const qty = +i.value;
     const price = +i.dataset.price;
     const name = i.dataset.name;
     if(qty > 0){
       sum += qty * price;
-      out += `• ${qty} × ${name} (${price} RBX)\n`;
+      text += `• ${qty} × ${name} (${price} RBX)\n`;
     }
   });
 
@@ -221,7 +262,8 @@ function calculate(){
     diff < 0 ? `<span class="warn">⚠️ DƯ ${-diff} RBX</span>` :
                `<span class="bad">❌ THIẾU ${diff} RBX</span>`;
 
-  result.innerHTML = out + `\nTổng dùng: ${sum} RBX\n${status}`;
+  document.getElementById("result").innerHTML =
+    text + `\nTổng dùng: ${sum} RBX\n${status}`;
 }
 </script>
 
