@@ -35,52 +35,53 @@ body{
 }
 
 /* SCROLL BAR */
-::-webkit-scrollbar{width:10px}
+::-webkit-scrollbar{width:8px}
 ::-webkit-scrollbar-thumb{
   background:linear-gradient(180deg,#4cc9f0,#7c7cff);
   border-radius:20px;
-  box-shadow:0 0 14px rgba(124,124,255,.9);
+  box-shadow:0 0 12px rgba(124,124,255,.9);
 }
 ::-webkit-scrollbar-track{background:#020617}
 
 /* LAYOUT */
 .container{
-  max-width:1600px;
+  max-width:1500px;
   margin:auto;
-  padding:28px 36px;
+  padding:18px 32px;
   display:grid;
   grid-template-columns:48% 52%;
-  gap:28px;
+  gap:24px;
 }
 
 .left,.right{
   display:flex;
   flex-direction:column;
-  gap:22px;
+  gap:20px;
+}
+
+/* TITLE (NO CARD) */
+.main-title{
+  grid-column:1/-1;
+  text-align:center;
+  font-size:32px;
+  font-weight:800;
+  margin-bottom:6px;
 }
 
 /* CARD */
 .card{
   background:var(--card);
   border-radius:22px;
-  padding:24px;
+  padding:22px;
   backdrop-filter:blur(14px);
   box-shadow:
     inset 0 0 0 1px rgba(255,255,255,.05),
-    0 20px 50px rgba(0,0,0,.55);
-}
-
-/* TITLE */
-.main-title{
-  text-align:center;
-  font-size:34px;
-  font-weight:800;
-  letter-spacing:1px;
+    0 18px 40px rgba(0,0,0,.55);
 }
 
 /* INPUT */
 label{font-weight:600;color:var(--muted)}
-input{
+input[type="number"]{
   width:100%;
   padding:14px;
   margin-top:8px;
@@ -94,67 +95,48 @@ input{
   transition:.25s;
 }
 
-/* INPUT HIGHLIGHT WHEN VALUE > 0 */
+/* ACTIVE INPUT */
 input.active{
   outline:2px solid var(--accent);
-  box-shadow:0 0 22px rgba(76,201,240,.8);
+  box-shadow:0 0 20px rgba(76,201,240,.9);
 }
 
 /* GAMEPASS */
 .gamepass-list{
-  max-height:560px;
+  max-height:520px;
   overflow:auto;
   padding-right:6px;
 }
 
 .gp-row{
   display:grid;
-  grid-template-columns:64px 1fr 120px;
+  grid-template-columns:64px 1fr 110px;
   gap:14px;
   align-items:center;
-  margin-bottom:14px;
+  margin-bottom:12px;
 }
 
 .gp-icon{
   width:64px;
   height:64px;
-  border-radius:18px;
-  box-shadow:0 0 16px rgba(76,201,240,.3);
+  border-radius:16px;
+  box-shadow:0 0 14px rgba(76,201,240,.3);
 }
 
 .gp-name{font-weight:700}
 .gp-price{font-size:14px;color:var(--muted)}
 
+.hide{display:none}
+
 /* BUTTON */
 button{
-  position:relative;
   border:none;
   border-radius:18px;
-  padding:20px;
-  font-size:18px;
+  padding:18px;
+  font-size:17px;
   font-weight:700;
   cursor:pointer;
-  overflow:hidden;
   transition:.25s;
-}
-
-button::before{
-  content:"";
-  position:absolute;
-  inset:-2px;
-  background:linear-gradient(120deg,transparent,rgba(255,255,255,.6),transparent);
-  transform:translateX(-120%);
-}
-button:hover::before{
-  transform:translateX(120%);
-  transition:.7s;
-}
-
-button:hover{
-  transform:translateY(-4px);
-}
-button:active{
-  transform:translateY(2px) scale(.98);
 }
 
 .auto{
@@ -162,7 +144,7 @@ button:active{
   color:#020617;
 }
 .auto:hover{
-  box-shadow:0 0 0 2px #7c7cff,0 0 30px rgba(124,124,255,.9);
+  box-shadow:0 0 0 2px #7c7cff,0 0 28px rgba(124,124,255,.9);
 }
 
 .run{
@@ -170,14 +152,14 @@ button:active{
   color:#022c22;
 }
 .run:hover{
-  box-shadow:0 0 0 2px #22c55e,0 0 30px rgba(34,197,94,.9);
+  box-shadow:0 0 0 2px #22c55e,0 0 28px rgba(34,197,94,.9);
 }
 
 /* RESULT */
 .result{
   background:#050b1e;
   border-radius:18px;
-  padding:20px;
+  padding:18px;
   white-space:pre-line;
 }
 
@@ -196,9 +178,7 @@ button:active{
 <body>
 <div class="container">
 
-  <div class="card" style="grid-column:1/-1">
-    <div class="main-title">🎁 Gift Gamepass Tool</div>
-  </div>
+  <div class="main-title">🎁 Gift Gamepass Tool</div>
 
   <div class="left">
     <div class="card">
@@ -207,7 +187,9 @@ button:active{
     </div>
 
     <div class="card">
-      <h3>🎮 Gamepass</h3>
+      <label>
+        <input type="checkbox" id="hideZero"> Ẩn gamepass không dùng
+      </label>
       <div id="list" class="gamepass-list"></div>
     </div>
   </div>
@@ -226,10 +208,9 @@ button:active{
       <div id="result" class="result">Chưa có dữ liệu</div>
     </div>
 
-    <div class="footer">
-      Tool by Khiêm • Gift Gamepass
-    </div>
+    <div class="footer">Tool by Khiêm • Gift Gamepass</div>
   </div>
+
 </div>
 
 <script>
@@ -246,6 +227,7 @@ const gamepasses=[
 const list=document.getElementById("list");
 const result=document.getElementById("result");
 const totalInput=document.getElementById("total");
+const hideZero=document.getElementById("hideZero");
 
 gamepasses.forEach((gp,i)=>{
   const row=document.createElement("div");
@@ -263,6 +245,14 @@ gamepasses.forEach((gp,i)=>{
   const input=row.querySelector("input");
   input.addEventListener("input",()=>{
     input.classList.toggle("active",+input.value>0);
+    row.classList.toggle("hide",hideZero.checked && +input.value===0);
+  });
+});
+
+hideZero.addEventListener("change",()=>{
+  document.querySelectorAll(".gp-row").forEach(row=>{
+    const input=row.querySelector("input");
+    row.classList.toggle("hide",hideZero.checked && +input.value===0);
   });
 });
 
@@ -301,6 +291,8 @@ function autoCombo(){
         remain-=q*g.price;
       }
     });
+
+  hideZero.dispatchEvent(new Event("change"));
   calculate();
 }
 </script>
